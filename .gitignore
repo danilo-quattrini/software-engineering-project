@@ -3,3 +3,6 @@ uml/*.vux
 uml/*.lac
 uml/.*
 .DS_Store
+.idea/
+.vscode/
+*.iml
