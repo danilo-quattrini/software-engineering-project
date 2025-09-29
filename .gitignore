@@ -6,3 +6,5 @@ uml/.*
 .idea/
 .vscode/
 *.iml
+.idea/*.xml
+.idea/*.iml
