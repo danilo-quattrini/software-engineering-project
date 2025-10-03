@@ -2,23 +2,11 @@
 plugins {
     id 'buildlogic.java-application-conventions'
     id 'org.springframework.boot' version '3.5.6'
-    id 'application'
 }
 
-group = 'it.unicam.cs.ids2425'
-version = '0.0.1-SNAPSHOT'
-
-repositories { mavenCentral() }
-
 dependencies {
-    implementation project(':utilities')
-    implementation platform("org.springframework.boot:spring-boot-dependencies:3.5.6")
-    implementation 'org.springframework.boot:spring-boot-starter-web'
-    implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
-    runtimeOnly 'com.h2database:h2'
-    testImplementation 'org.springframework.boot:spring-boot-starter-test' }
-
-application {
-    // Define the main class for the application.
-    mainClass = 'it.unicam.cs.ids2425.App'
+    implementation 'org.apache.commons:commons-text'
+    implementation project(':osm')
+    implementation project(':paymentsystem')
+    implementation project(':socialsystem')
 }
