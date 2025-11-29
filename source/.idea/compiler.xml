@@ -5,6 +5,7 @@
   </component>
   <component name="JavacSettings">
     <option name="ADDITIONAL_OPTIONS_OVERRIDE">
+      <module name="software-engineering-project.source.app.main" options="-parameters" />
       <module name="source.app" options="-parameters" />
       <module name="source.app.main" options="-parameters" />
       <module name="source.app.test" options="-parameters" />
