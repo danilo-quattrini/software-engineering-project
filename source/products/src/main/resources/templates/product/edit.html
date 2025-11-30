@@ -46,6 +46,17 @@
             <!-- Certificate Upload -->
             <div class="mb-5">
                 <label class="block mb-2 text-sm font-medium text-heading" for="file_input">Upload file</label>
+                <div th:if="${product.certificate != null}" class="flex items-center justify-between mb-2">
+                    <div class="text-sm text-gray-700">
+                        <p class="font-medium">Current certificate</p>
+                        <p th:text="${product.certificate.name}" class="text-gray-600">certificate.pdf</p>
+                    </div>
+                    <a th:href="@{/certificate/download/{id}(id=${product.certificate.id})}"
+                       class="inline-flex items-center rounded-lg bg-blue-700 text-white hover:bg-blue-800 focus:ring-blue-300 px-3 py-2 text-sm font-medium transition-colors duration-300">
+                        Download
+                    </a>
+                </div>
+                <p th:if="${product.certificate != null}" class="mb-2 text-sm text-gray-500">Leave empty to keep the current certificate.</p>
                 <input class="cursor-pointer p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500 focus:ring-brand focus:border-brand block shadow-xs placeholder:text-body"
                        aria-describedby="file_input_help" id="file_input" type="file" name="file">
                 <p class="mt-1 text-sm text-gray-500" id="file_input_help">SVG, PNG, JPG or GIF (MAX. 800x400px).</p>

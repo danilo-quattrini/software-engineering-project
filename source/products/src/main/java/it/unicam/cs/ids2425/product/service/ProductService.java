@@ -105,13 +105,22 @@ public class ProductService implements ProductOperation {
     @Transactional
     public void updateProduct(UUID uuid, Product product, MultipartFile file) throws IOException {
         Product productFound = productRepository.findById(uuid).orElseThrow(() -> new IllegalStateException("The product you are trying to update doesn't exists"));
-        Certificate certificate = certificateService.getFile(productFound.getCertificate().getId());
-        certificateService.updateFile(file, certificate);
+        Certificate certificate = productFound.getCertificate();
+        if (file != null && !file.isEmpty()) {
+            if (certificate == null) {
+                certificate = certificateService.store(file);
+            } else {
+                certificateService.updateFile(file, certificate);
+            }
+        }
 
         productFound.setName(product.getName());
         productFound.setPrice(product.getPrice());
         productFound.setQuantity(product.getQuantity());
         productFound.setCategory(product.getCategory());
+        if (certificate != null) {
+            certificate.setProduct(productFound);
+        }
         productFound.setCertificate(certificate);
         productFound.setDescription(product.getDescription());
         productFound.setProductionPhases(product.getProductionPhases());
