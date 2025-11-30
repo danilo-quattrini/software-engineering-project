@@ -81,7 +81,7 @@
                                         </svg>
                                         Remove
                                     </button>
-                                    <form th:action="@{/cart/{uuid}(uuid=${item.cartItemProduct.id})}"
+                                    <form th:action="@{/cart/{id}(id=${item.id})}"
                                           th:method="DELETE" th:id="delete_element"></form>
                                 </div>
                             </div>

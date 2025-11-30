@@ -81,10 +81,10 @@ public class CartController {
         return "redirect:/cart/items";
     }
 
-    @DeleteMapping("/{uuid}")
+    @DeleteMapping("/{id}")
     @PreAuthorize("hasAnyRole('BUYER')")
-    public String destroy(@PathVariable("uuid") UUID uuid) {
-        cartOperation.removeItem(uuid);
+    public String destroy(@PathVariable("id") Long id) {
+        cartOperation.removeItem(id);
 
         return "redirect:/cart/items";
     }

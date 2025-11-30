@@ -11,7 +11,7 @@ public interface CartOperation {
 
     void addProductToCart(Long cartId, UUID productUUID, int quantity);
 
-    void removeItem(UUID productUUID);
+    void removeItem(Long id);
 
     void incrementItem(Long itemId);
 

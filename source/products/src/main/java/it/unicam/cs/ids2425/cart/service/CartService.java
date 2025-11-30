@@ -87,8 +87,8 @@ public class CartService implements CartOperation {
     }
 
     @Override
-    public void removeItem(UUID productUUID) {
-        CartItem cartItem = cartItemRepository.findByCartItemProductId(productUUID);
+    public void removeItem(Long id) {
+        CartItem cartItem = cartItemRepository.findById(id).orElseThrow();
         Cart cart = cartItem.getParentCart();
         cart.removeItem(cartItem);
         cartItemRepository.delete(cartItem);
