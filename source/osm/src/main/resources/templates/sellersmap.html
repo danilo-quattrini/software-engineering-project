@@ -4,52 +4,60 @@
     <meta charset="UTF-8">
     <title>Mappa Venditori</title>
 
+    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+
     <meta name="_csrf" th:content="${_csrf.token}"/>
     <meta name="_csrf_header" th:content="${_csrf.headerName}"/>
 
+    <!-- Leaflet -->
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
           integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY="
           crossorigin=""/>
     <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
             integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo="
             crossorigin=""></script>
-    <script src="https://cdn.tailwindcss.com"></script>
+
+    <!-- Flowbite (kept as you already use it in navbar) -->
     <script src="https://cdn.jsdelivr.net/npm/flowbite@4.0.1/dist/flowbite.min.js"></script>
 </head>
-<body>
+
+<body class="bg-gray-50 min-h-screen">
+
 <div th:replace="~{product/components/navbar/navigation-bar :: navigation(${user.getSimpleRole()})}"></div>
-<h2>Mappa dei venditori</h2>
 
-<div id="map"
-     style="height:500px;"
-     th:attr="
-         data-can-edit=${canEditSellerLocation ? 'true' : 'false'},
-         data-seller-id=${sellerId != null ? sellerId : ''},
-         data-seller-name=${user != null ? user.name : ''},
-         data-seller-email=${user != null ? user.email : ''}">
+<div class="flex justify-center py-10">
+    <div class="w-full max-w-4xl bg-white shadow-lg rounded-2xl p-8">
+
+        <h3 class="text-2xl font-semibold text-center mb-6 text-gray-800">
+            Mappa dei venditori
+        </h3>
+
+        <!-- Map Wrapper -->
+        <div class="rounded-lg overflow-hidden shadow border border-gray-300">
+            <div id="map"
+                 class="w-full"
+                 style="height:500px;"
+                 th:attr="
+                     data-can-edit=${canEditSellerLocation ? 'true' : 'false'},
+                     data-seller-id=${sellerId != null ? sellerId : ''},
+                     data-seller-name=${user != null ? user.name : ''},
+                     data-seller-email=${user != null ? user.email : ''}">
+            </div>
+        </div>
+
+    </div>
 </div>
-
 
 <script type="module">
     import MapComponent from '/js/osm/map-component.js';
-    import {loadSellersMarkers} from '/js/osm/modules/seller-location/loadSellersMarkers.js';
-    import {
-        addSellerLocationOnClick
-    } from '/js/osm/modules/seller-location/addSellerLocationOnClick.js';
-    import {
-        addSellerLocationByAddress
-    } from '/js/osm/modules/seller-location/addSellerLocationByAddress.js';
+    import { loadSellersMarkers } from '/js/osm/modules/seller-location/loadSellersMarkers.js';
+    import { addSellerLocationOnClick } from '/js/osm/modules/seller-location/addSellerLocationOnClick.js';
+    import { addSellerLocationByAddress } from '/js/osm/modules/seller-location/addSellerLocationByAddress.js';
 
     const mapElement = document.getElementById("map");
 
-    // debug
-    console.log("dataset raw:", mapElement.dataset);
-
     const canEdit = mapElement.dataset.canEdit?.trim().toLowerCase() === "true";
     const sellerId = canEdit && mapElement.dataset.sellerId ? Number(mapElement.dataset.sellerId) : null;
-    // debug
-    console.log("DEBUG: sellerId type:", typeof sellerId, sellerId);
-    console.log("DEBUG: canEdit =", canEdit, "sellerId =", sellerId);
 
     const map = new MapComponent('map', {
         center: [41.9028, 12.4964],
@@ -60,8 +68,8 @@
     map.use(loadSellersMarkers);
 
     if (canEdit) {
-        map.use((mapComponent) => addSellerLocationOnClick(mapComponent, sellerId));
-        map.use((mapComponent) => addSellerLocationByAddress(mapComponent, sellerId));
+        map.use((mc) => addSellerLocationOnClick(mc, sellerId));
+        map.use((mc) => addSellerLocationByAddress(mc, sellerId));
     }
 </script>
 

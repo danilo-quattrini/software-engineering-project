@@ -1,33 +1,53 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org" lang="it">
-<head>
-    <meta charset="UTF-8">
-    <title>Dashboard Utenti Admin</title>
-</head>
-<body>
-<table>
-    <thead>
-    <tr>
-        <th>ID</th>
-        <th>Utente</th>
-        <th>Nome</th>
-        <th>Ruolo</th>
-        <th>Elimina</th>
-    </tr>
-    </thead>
-    <tbody>
-    <tr th:each="u : ${users}">
-        <td th:text="${u.id}"></td>
-        <td th:text="${u.email}"></td>
-        <td th:text="${u.name}"></td>
-        <td th:text="${u.role}"></td>
-        <td>
-            <form th:action="@{/users/admin/delete/{id}(id=${u.id})}" method="post">
-                <button type="submit">Elimina</button>
-            </form>
-        </td>
-    </tr>
-    </tbody>
-</table>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{product/components/head :: head('Marketplace')}"></head>
+
+<body class="bg-gray-50 min-h-screen">
+
+<div th:replace="~{product/components/navbar/navigation-bar :: navigation(${user.getSimpleRole()})}"></div>
+
+<!-- Contenuto centrato -->
+<section class="min-h-screen flex flex-col items-center justify-center py-8 md:py-12">
+
+    <div class="w-full max-w-4xl bg-white shadow-lg rounded-2xl p-8">
+
+        <h3 class="text-2xl font-semibold text-center mb-6 text-gray-800">
+            Gestione Utenti
+        </h3>
+
+        <table class="w-full table-auto border-collapse">
+            <thead>
+            <tr class="bg-gray-100 text-gray-700">
+                <th class="px-4 py-2 text-left">ID</th>
+                <th class="px-4 py-2 text-left">Email</th>
+                <th class="px-4 py-2 text-left">Nome</th>
+                <th class="px-4 py-2 text-left">Ruolo</th>
+                <th class="px-4 py-2 text-center">Azione</th>
+            </tr>
+            </thead>
+
+            <tbody>
+            <tr th:each="u : ${users}" class="border-b hover:bg-gray-50">
+                <td class="px-4 py-2" th:text="${u.id}"></td>
+                <td class="px-4 py-2" th:text="${u.email}"></td>
+                <td class="px-4 py-2" th:text="${u.name}"></td>
+                <td class="px-4 py-2" th:text="${u.role}"></td>
+
+                <td class="px-4 py-2 text-center">
+                    <form th:action="@{/users/admin/delete/{id}(id=${u.id})}" method="post">
+                        <button type="submit"
+                                class="bg-red-600 hover:bg-red-700 text-white px-4 py-1 rounded-md font-medium transition duration-200">
+                            Elimina
+                        </button>
+                    </form>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+
+    </div>
+
+</section>
+
 </body>
 </html>

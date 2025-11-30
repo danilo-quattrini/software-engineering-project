@@ -31,13 +31,17 @@
                     <a th:if="${role} == 'DISTRIBUTOR'" th:href="@{/bundle/dashboard}"
                        class="text-dark text-lg font-semibold hover:text-orange-600 mr-4">Bundle Dashboard</a>
                     <a th:if="${role} == 'PRODUCER'" th:href="@{/products/seller/balance}"
-                       class="text-dark text-lg font-semibold hover:text-orange-600 mr-4">Balance</a>
+                       class="text-dark text-lg font-semibold hover:text-orange-600 mr-4">Saldo</a>
                     <a th:if="${role} == 'TRANSFORMER'" th:href="@{/products/seller/balance}"
-                       class="text-dark text-lg font-semibold hover:text-orange-600 mr-4">Balance</a>
+                       class="text-dark text-lg font-semibold hover:text-orange-600 mr-4">Saldo</a>
                     <a th:if="${role} == 'DISTRIBUTOR'" th:href="@{/products/seller/balance}"
-                       class="text-dark text-lg font-semibold hover:text-orange-600 mr-4">Balance</a>
+                       class="text-dark text-lg font-semibold hover:text-orange-600 mr-4">Saldo</a>
                     <a th:if="${role} == 'ENTERTAINER'" th:href="@{/events/entertainer/balance}"
-                       class="text-dark text-lg font-semibold hover:text-orange-600 mr-4">Balance</a>
+                       class="text-dark text-lg font-semibold hover:text-orange-600 mr-4">Saldo</a>
+                    <a th:if="${role} == 'ADMIN'" th:href="@{/users/admin/dashboard}"
+                       class="text-dark text-lg font-semibold hover:text-orange-600 mr-4">Utenti</a>
+                    <a th:if="${role} == 'ADMIN'" th:href="@{/payments/admin/dashboard}"
+                       class="text-dark text-lg font-semibold hover:text-orange-600 mr-4">Pagamenti</a>
                 </div>
 
                 <div class="hidden sm:flex sm:items-center">
