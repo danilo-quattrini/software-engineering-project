@@ -23,12 +23,9 @@
             <option value="$PROJECT_DIR$" />
             <option value="$PROJECT_DIR$/app" />
             <option value="$PROJECT_DIR$/buildSrc" />
-            <option value="$PROJECT_DIR$/events" />
-            <option value="$PROJECT_DIR$/notifications" />
             <option value="$PROJECT_DIR$/osm" />
             <option value="$PROJECT_DIR$/paymentsystem" />
-            <option value="$PROJECT_DIR$/products" />
-            <option value="$PROJECT_DIR$/socialsystem" />
+            <option value="$PROJECT_DIR$/rest" />
             <option value="$PROJECT_DIR$/users" />
           </set>
         </option>

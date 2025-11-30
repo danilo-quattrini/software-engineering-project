@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="it" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Pagina Pagamento</title>
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
+          integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY="
+          crossorigin=""/>
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
+            integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo="
+            crossorigin=""></script>
+    </script>
+
+    <script type="module">
+        import MapComponent from '/js/osm/map-component.js';
+        import { addDeliveryPointOnClick } from '/js/osm/modules/delivery-point/addDeliveryPointOnClick.js';
+        import { addDeliveryPointByAddress } from '/js/osm/modules/delivery-point/addDeliveryPointByAddress.js';
+
+        function updateFormFields({ latitude, longitude, address, postalCode, countryCode }) {
+            document.querySelector('#address').value = address;
+            document.querySelector('#lat').value = latitude;
+            document.querySelector('#lng').value = longitude;
+        }
+
+        window.initMap = function () {
+
+            const map = new MapComponent('map', {
+                center: [41.9028, 12.4964],
+                zoom: 6
+            });
+
+            map.use((mapComponent) => addDeliveryPointOnClick(mapComponent, updateFormFields));
+            map.use((mapComponent) => addDeliveryPointByAddress(mapComponent, updateFormFields));
+        };
+    </script>
+
+</head>
+<body>
+<h2>Pagamento di prova</h2>
+
+<p>Importo:
+    <strong th:text="${paymentDto.reference.amount} + ' ' + ${paymentDto.reference.currencyCode}"></strong>
+</p>
+
+<div th:if="${!isEvent}">
+<p><strong>Indirizzo:</strong>
+    <span th:text="${paymentDto.location != null ? paymentDto.location.address : ''}"></span>
+</p>
+</div>
+
+<form id="payment-form">
+    <input type="hidden" id="referenceId" name="referenceId" th:value="${paymentDto.reference.id}"/>
+    <input type="hidden" id="payerEmail" name="payerEmail" th:value="${paymentDto.payer.email}"/>
+    <div th:if="${!isEvent}">
+
+        <input type="hidden" id="address" name="address"/>
+        <input type="hidden" id="lat" name="lat"/>
+        <input type="hidden" id="lng" name="lng"/>
+
+        <div id="map" style="height:400px; width:600px; border:1px solid #aaa;"></div>
+
+        <script>
+            window.addEventListener('DOMContentLoaded', () => initMap());
+        </script>
+
+    </div>
+
+    <button type="button" id="pay-btn">Paga con PSP Demo</button>
+</form>
+
+<script type="module" src="/js/psp/pspscript.js"></script>
+
+</body>
+</html>

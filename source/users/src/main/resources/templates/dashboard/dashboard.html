@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="it">
+<head>
+    <meta charset="UTF-8">
+    <title>Dashboard Utenti Admin</title>
+</head>
+<body>
+<table>
+    <thead>
+    <tr>
+        <th>ID</th>
+        <th>Utente</th>
+        <th>Nome</th>
+        <th>Ruolo</th>
+        <th>Elimina</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr th:each="u : ${users}">
+        <td th:text="${u.id}"></td>
+        <td th:text="${u.email}"></td>
+        <td th:text="${u.name}"></td>
+        <td th:text="${u.role}"></td>
+        <td>
+            <form th:action="@{/it/unicam/cs/ids2425/users/admin/delete/{id}(id=${u.id})}" method="post">
+                <button type="submit">Elimina</button>
+            </form>
+        </td>
+    </tr>
+    </tbody>
+</table>
+</body>
+</html>

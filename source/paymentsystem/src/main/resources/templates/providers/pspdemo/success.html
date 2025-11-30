@@ -1,0 +1,12 @@
+<!DOCTYPE html>
+<html lang="it" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Pagamento completato</title>
+    <script th:src="@{/js/psp/providers/pspdemo/success.js}" defer></script>
+</head>
+<body>
+<p>Pagamento completato con successo, reindirizzamento in corso...</p>
+<input type="hidden" id="redirectUrl" th:value="${redirectUrl}">
+</body>
+</html>
