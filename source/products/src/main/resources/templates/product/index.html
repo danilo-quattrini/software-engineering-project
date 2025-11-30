@@ -31,7 +31,7 @@
         <div class="mb-4 grid gap-4 sm:grid-cols-2 md:mb-8 lg:grid-cols-3 xl:grid-cols-4">
             <div th:each="product : ${products}" th:object="${product}"
                  class="product-card rounded-lg border border-gray-200 bg-white p-6 shadow-sm">
-
+            <a th:href="@{/products/{uuid}(uuid=*{id})}">
                 <!-- PRODUCT IMAGE -->
                 <div th:replace="~{product/components/card/card-image :: card-image}"></div>
 
@@ -76,9 +76,8 @@
                     </div>
 
                     <div class="flex items-start justify-between gap-2">
-                        <a th:text="*{name}" th:href="@{/products/{uuid}(uuid=*{id})}"
-                           class="product-name text-lg font-semibold leading-tight text-gray-900 hover:underline">Example
-                            Title</a>
+                        <p th:text="*{name}" class="product-name text-lg font-semibold leading-tight text-gray-900">Example
+                            Title</p>
                         <span th:if="${user.getSimpleRole() == 'DISTRIBUTOR'
                                         or user.getSimpleRole() == 'TRANSFORMER'
                                         or user.getSimpleRole() == 'PRODUCER'}"
@@ -141,6 +140,7 @@
                         </div>
                     </div>
                 </div>
+            </a>
             </div>
         </div>
 
