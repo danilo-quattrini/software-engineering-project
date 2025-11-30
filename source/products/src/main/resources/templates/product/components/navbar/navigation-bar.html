@@ -145,6 +145,8 @@
                         <div class="px-4 py-3 text-sm text-gray-900">
                             <p class="font-semibold text-xl" th:text="${user.getName()}">User Name</p>
                             <p class="text-gray-500 text-xs" th:text="'ROLE: '+ ${user.getSimpleRole()}">ROLE_USER</p>
+                            <hr class="text-black mb-2">
+                            <a th:href="@{/profile}" class="font-semibold text-base my-2 hover:text-orange-600">Profile</a>
                         </div>
                         <!-- Logout -->
                         <div class="py-2">
@@ -217,7 +219,10 @@
                             <div class="px-4 py-3 text-sm text-gray-900">
                                 <p class="font-semibold text-xl" th:text="${user.getName()}">User Name</p>
                                 <p class="text-gray-500 text-xs" th:text="'ROLE: ' + ${user.getSimpleRole()}">
+
                                     ROLE_USER</p>
+                                <hr class="text-black mb-2">
+                                <a th:href="@{/profile}" class="font-semibold text-base my-2 hover:text-orange-600">Profile</a>
                             </div>
                             <!-- Logout -->
                             <div class="py-2">
