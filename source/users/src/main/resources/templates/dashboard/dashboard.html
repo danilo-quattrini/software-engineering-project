@@ -22,7 +22,7 @@
         <td th:text="${u.name}"></td>
         <td th:text="${u.role}"></td>
         <td>
-            <form th:action="@{/it/unicam/cs/ids2425/users/admin/delete/{id}(id=${u.id})}" method="post">
+            <form th:action="@{/users/admin/delete/{id}(id=${u.id})}" method="post">
                 <button type="submit">Elimina</button>
             </form>
         </td>

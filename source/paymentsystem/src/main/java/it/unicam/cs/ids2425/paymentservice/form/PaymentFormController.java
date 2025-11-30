@@ -1,4 +1,4 @@
-package it.unicam.cs.ids2425.paymentservice.example;
+package it.unicam.cs.ids2425.paymentservice.form;
 
 import it.unicam.cs.ids2425.payment.PaymentDTO;
 import it.unicam.cs.ids2425.payment.referable.Referable;
