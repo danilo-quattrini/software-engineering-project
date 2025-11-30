@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="it" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Dashboard Pagamenti Admin</title>
+</head>
+<body>
+<table>
+    <thead>
+    <tr>
+        <th>ID</th>
+        <th>Utente</th>
+        <th>Importo</th>
+        <th>Contabilizza</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr th:each="p : ${payments}">
+        <td th:text="${p.id}"></td>
+        <td th:text="${p.payer.email}"></td>
+        <td th:text="${p.reference.amount}"></td>
+        <td>
+            <form th:action="@{/payments/admin/process/{id}(id=${p.id})}" method="post">
+                <button type="submit">Contabilizza</button>
+            </form>
+        </td>
+    </tr>
+    </tbody>
+</table>
+</body>
+</html>
