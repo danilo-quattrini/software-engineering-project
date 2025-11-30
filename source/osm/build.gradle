@@ -18,4 +18,5 @@ dependencies {
     // modules dependencies
     implementation project(":rest")
     implementation project(":users")
+    implementation project(":location")
 }

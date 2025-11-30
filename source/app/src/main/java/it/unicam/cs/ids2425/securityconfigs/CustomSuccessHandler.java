@@ -1,4 +1,4 @@
-package securityconfigs;
+package it.unicam.cs.ids2425.securityconfigs;
 
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;

@@ -1,4 +1,4 @@
-package securityconfigs;
+package it.unicam.cs.ids2425.securityconfigs;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

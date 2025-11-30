@@ -6,4 +6,28 @@ plugins {
 
 dependencies {
     implementation 'org.apache.commons:commons-text'
+
+    // Apply Spring Boot plugins and dependencies
+    implementation 'org.springframework.boot:spring-boot-gradle-plugin:3.5.6'
+    implementation 'io.spring.gradle:dependency-management-plugin:1.1.7'
+
+    // Spring Boot dependencies
+    implementation platform('org.springframework.boot:spring-boot-dependencies:3.5.6')
+    implementation 'org.springframework.boot:spring-boot-starter-web'
+    implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
+    implementation 'org.springframework.boot:spring-boot-starter-thymeleaf'
+    implementation 'org.springframework.boot:spring-boot-starter-validation'
+    implementation 'org.springframework.boot:spring-boot-starter-data-jdbc'
+    implementation 'org.springframework.boot:spring-boot-starter-jdbc'
+    implementation 'org.springframework.boot:spring-boot-starter-security'
+    implementation 'org.springframework.boot:spring-boot-starter-actuator'
+
+    // Database driver
+    runtimeOnly 'org.postgresql:postgresql'
+
+    implementation project(":location")
+    implementation project(":osm")
+    implementation project(":paymentsystem")
+    implementation project(":rest")
+    implementation project(":users")
 }
