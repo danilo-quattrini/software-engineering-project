@@ -26,6 +26,7 @@
             <option value="$PROJECT_DIR$/location" />
             <option value="$PROJECT_DIR$/osm" />
             <option value="$PROJECT_DIR$/paymentsystem" />
+            <option value="$PROJECT_DIR$/products" />
             <option value="$PROJECT_DIR$/rest" />
             <option value="$PROJECT_DIR$/users" />
           </set>

@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{product/components/head :: head('Cart')}"></head>
+<body class="bg-gray-50">
+<div th:replace="~{product/components/navbar/navigation-bar :: navigation(${user.getSimpleRole()})}"></div>
+<section class="py-8 antialiased">
+    <div th:if="${cart.cartItems.size() == 0}">
+        <div class="bg-white rounded-md px-[96px] py-[80px] shadow flex flex-col justify-center items-center max-w-fit mx-auto space-y-[16px]">
+            <h1 class="text-8xl text-black font-bold">Cart is Empty</h1>
+            <a th:replace="~{product/components/form/button :: button('Go Back', '/products', 'red')}"> </a>
+        </div>
+    </div>
+    <div th:if="${cart.cartItems.size() > 0}" class="mx-auto max-w-screen-xl px-4 2xl:px-0">
+        <h2 class="text-5xl text-black mb-2 font-bold">Shopping Cart</h2>
+        <hr class="my-5 w-[500px] text-white"/>
+        <div class="mt-6 sm:mt-8 md:gap-6 lg:flex lg:items-start xl:gap-8">
+            <div class="mx-auto w-full flex-none lg:max-w-2xl xl:max-w-4xl">
+                <!-- Product Element -->
+                <div class="space-y-6">
+                    <div th:each="item : ${cart.cartItems}"
+                         class="rounded-lg border border-gray-200 bg-white p-4 shadow-sm   md:p-6">
+                        <div
+                                class="space-y-4 md:flex md:items-center md:justify-between md:gap-6 md:space-y-0">
+                            <div class="shrink-0 md:order-1">
+                                <img class="h-24 w-24 rounded-lg"
+                                     src="https://picsum.photos/seed/120/120" alt=""/>
+                            </div>
+
+                            <!-- Quantity Selector -->
+                            <label for="counter-input" class="sr-only">Choose quantity:</label>
+                            <div class="flex items-center justify-between md:order-3 md:justify-end">
+                                <div class="flex items-center">
+                                    <!-- Button decrease -->
+                                    <button type="button"
+                                            th:data-id="${item.id}"
+                                            class="decrement-btn inline-flex h-5 w-5 shrink-0 items-center justify-center rounded-md border border-gray-300 bg-gray-100 hover:bg-gray-200 focus:outline-none focus:ring-2 focus:ring-gray-100"
+                                    >
+                                        <svg class="h-2.5 w-2.5 text-gray-900" aria-hidden="true"
+                                             xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 18 2">
+                                            <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"
+                                                  stroke-width="2" d="M1 1h16"/>
+                                        </svg>
+                                    </button>
+                                    <input type="text" id="counter-input" data-input-counter
+                                           class="w-10 shrink-0 border-0 bg-transparent text-center text-sm font-medium text-gray-900 focus:outline-none focus:ring-0"
+                                           th:value="${item.productQuantity}" readonly/>
+                                    <!-- Button Increase -->
+                                    <button type="button"
+                                            th:data-id="${item.id}"
+                                            class="increment-btn inline-flex h-5 w-5 shrink-0 items-center justify-center rounded-md border border-gray-300 bg-gray-100 hover:bg-gray-200 focus:outline-none focus:ring-2 focus:ring-gray-100">
+
+                                        <svg class="h-2.5 w-2.5 text-gray-900" aria-hidden="true"
+                                             xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 18 18">
+                                            <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"
+                                                  stroke-width="2" d="M9 1v16M1 9h16"/>
+                                        </svg>
+                                    </button>
+                                </div>
+                                <div class="text-end md:order-4 md:w-32">
+                                    <p th:text="${item.cartItemProduct.price} + '€'"
+                                       class="text-base font-bold text-gray-900">$1,499</p>
+                                </div>
+                            </div>
+
+                            <div class="w-full min-w-0 flex-1 space-y-4 md:order-2 md:max-w-md">
+                                <h2 th:text="${item.cartItemProduct.name}"
+                                    class="text-lg font-bold text-gray-900"></h2>
+                                <p th:text="${item.cartItemProduct.description}"
+                                   class="text-base font-medium text-gray-900 hover:underline">PC
+                                    system All in One APPLE iMac (2023) mqrq3ro/a, Apple M3, 24" Retina 4.5K, 8GB, SSD
+                                    256GB, 10-core GPU, Keyboard layout INT</p>
+
+                                <div class="flex items-center">
+                                    <button type="submit" th:form="delete_element"
+                                            class="inline-flex items-center text-sm font-medium text-red-600 hover:underline ">
+                                        <svg class="me-1.5 h-5 w-5" aria-hidden="true"
+                                             xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none"
+                                             viewBox="0 0 24 24">
+                                            <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"
+                                                  stroke-width="2" d="M6 18 17.94 6M18 18 6.06 6"/>
+                                        </svg>
+                                        Remove
+                                    </button>
+                                    <form th:action="@{/cart/{uuid}(uuid=${item.cartItemProduct.id})}"
+                                          th:method="DELETE" th:id="delete_element"></form>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="mx-auto mt-6 max-w-4xl flex-1 space-y-6 lg:mt-0 lg:w-full">
+                <div class="space-y-4 rounded-lg border border-gray-200 bg-white p-4 shadow-sm ">
+                    <p class="text-xl font-semibold text-gray-900">Order summary</p>
+
+                    <div class="space-y-4">
+                        <div class="space-y-2">
+                            <dl th:each="item : ${cart.cartItems}" class="flex items-center justify-between gap-4">
+                                <dt th:text="${item.cartItemProduct.name} + ' x ' + ${item.productQuantity}"
+                                    class="text-base font-normal text-gray-500 ">
+                                    Original price
+                                </dt>
+                                <dd th:text="${item.cartItemProduct.price * item.getProductQuantity()} + '€'"
+                                    class="text-base font-medium text-gray-900">$7,592.00
+                                </dd>
+                            </dl>
+                        </div>
+
+                        <dl class="flex items-center justify-between gap-4 border-t border-gray-200 pt-2 ">
+                            <dt class="text-3xl font-bold text-gray-900">Total</dt>
+                            <dd th:text="${cart.getAmount()} + '€'" class="text-3xl font-bold text-gray-900">
+                                $8,191.00
+                            </dd>
+                        </dl>
+                    </div>
+
+                    <a th:href="@{/psp/paymentdemo/payment(referenceId=${cart.id})}"
+                       class="inline-flex items-center rounded-lg px-5 py-2.5 text-sm font-medium focus:outline-none focus:ring-4 cursor-pointer transition-colors duration-300 bg-blue-700 text-white hover:bg-blue-800 focus:ring-blue-300"
+                    >
+                        <span>Complete Order</span>
+                    </a>
+
+                    <div class="flex items-center justify-start gap-2">
+                        <span class="text-sm font-normal text-gray-500 "> or </span>
+                        <a th:href="@{/products}" title=""
+                           class="inline-flex items-center gap-2 text-sm font-medium text-primary-700 underline hover:no-underline">
+                            Continue Shopping
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+<script>
+    // include CSRF headers if you use Spring Security
+    const csrfToken = document.querySelector('meta[name="_csrf"]').content;
+    const csrfHeader = document.querySelector('meta[name="_csrf_header"]').content;
+
+    document.querySelectorAll(".increment-btn").forEach(btn => {
+        btn.addEventListener("click", () => {
+            const id = btn.dataset.id;
+            fetch(`/cart/item/${id}/increment`, {
+                method: "POST",
+                headers: {
+                    [csrfHeader]: csrfToken
+                }
+            }).then(() => location.reload());
+        });
+    });
+
+    document.querySelectorAll(".decrement-btn").forEach(btn => {
+        btn.addEventListener("click", () => {
+            const id = btn.dataset.id;
+            fetch(`/cart/item/${id}/decrement`, {
+                method: "POST",
+                headers: {
+                    [csrfHeader]: csrfToken
+                }
+            }).then(() => location.reload());
+        });
+    });
+</script>
+</body>
+</html>

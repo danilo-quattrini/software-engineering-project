@@ -1,20 +1,22 @@
 plugins {
-    id 'java'
-}
-
-group = 'it.unicam.cs.ids2425.socialsystem'
-version = 'unspecified'
-
-repositories {
-    mavenCentral()
+    id 'buildlogic.java-library-conventions'
 }
 
 dependencies {
-    testImplementation platform('org.junit:junit-bom:5.10.0')
-    testImplementation 'org.junit.jupiter:junit-jupiter'
-    testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
-}
-
-test {
-    useJUnitPlatform()
+    // This is the  configuration for the jdbc
+    implementation project(':osm')
+    implementation project(':location')
+    implementation project(':paymentsystem')
+    implementation project(':users')
+    implementation project(':rest')
+    implementation 'org.springframework.boot:spring-boot-starter-jdbc'
+    implementation 'org.springframework.boot:spring-boot-starter-data-jdbc'
+    implementation 'org.springframework.boot:spring-boot-starter-thymeleaf'
+    implementation 'org.springframework.boot:spring-boot-starter-validation'
+    implementation 'org.springframework.boot:spring-boot-starter-actuator'
+    implementation 'org.springframework.boot:spring-boot-devtools'
+    implementation 'org.thymeleaf:thymeleaf:3.0.12.RELEASE'
+    compileOnly 'org.projectlombok:lombok:1.18.30'
+    annotationProcessor 'org.projectlombok:lombok:1.18.30'
+    runtimeOnly 'org.postgresql:postgresql'
 }

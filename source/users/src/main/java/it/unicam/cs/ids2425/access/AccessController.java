@@ -15,7 +15,7 @@ import it.unicam.cs.ids2425.users.roles.UserRole;
 import it.unicam.cs.ids2425.users.service.UserServiceInterface;
 
 @Controller
-@Profile("carlo-secure")
+@Profile("secured")
 public class AccessController {
 
     private final UserRegistrationFacade userRegistrationFacade;

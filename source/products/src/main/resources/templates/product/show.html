@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{product/components/head :: head(${product.getName()})}"></head>
+<body>
+<div th:replace="~{product/components/navbar/navigation-bar :: navigation(${user.getSimpleRole()})}"></div>
+<div class="mx-auto max-w-screen-xl px-4 py-8 2xl:px-0">
+    <div th:replace="~{product/components/navbar/marketplace-links :: nav}"></div>
+    <!-- Product Section -->
+    <h1 class="text-5xl text-black mb-5 font-bold"> Product Info</h1>
+    <hr class="my-5 w-[500px] bg-black"/>
+    <div class="bg-gray-50 rounded-md" th:object="${product}">
+        <div class="container mx-auto px-4 py-8">
+            <div class="flex flex-wrap -mx-4">
+                <!-- Product Images -->
+                <div class="w-full md:w-1/2 px-4 mb-8 rounded-lg">
+                    <img th:replace="~{product/components/image :: image('1080')}"/>
+                </div>
+
+                <!-- Product Details -->
+                <div class="w-full md:w-1/2 px-4">
+                    <div class="flex items-start justify-between gap-3">
+                        <h2 th:text="*{name}" class="text-4xl font-bold mb-2"></h2>
+                        <span th:if="${user.getSimpleRole() == 'DISTRIBUTOR'
+                                        or user.getSimpleRole() == 'TRANSFORMER'
+                                        or user.getSimpleRole() == 'PRODUCER'
+                                        or user.getSimpleRole() == 'TRUSTEE'}"
+                              class="px-3 py-1 rounded-full text-xs font-semibold"
+                              th:classappend="*{status.name() == 'PENDING'} ? ' bg-amber-100 text-amber-800' :
+                              (*{status.name() == 'APPROVED'} ? ' bg-green-100 text-green-700' : ' bg-red-100 text-red-700')"
+                              th:text="*{status.name() == 'PENDING'} ? 'In revisione' :
+                              (*{status.name() == 'APPROVED'} ? 'Approvato' : 'Rifiutato')"></span>
+                    </div>
+                    <p th:text="*{category}"
+                       class="w-fit font-medium text-black border border-black rounded-lg py-2 px-4 mb-4 text-xl"></p>
+                    <p th:text="'Expire date: ' + *{expireDate}" class="text-gray-600 text-xl mb-4"></p>
+                    <div class="mb-4">
+                        <span th:text="*{price + ' €'}" class="text-4xl font-bold mr-2">$349.99</span>
+                    </div>
+
+                    <!-- Description Area -->
+                    <p class="text-2xl font-bold mb-4">Description</p>
+                    <p th:text="*{description}" class="text-gray-700 mb-6 text-lg">Experience premium sound
+                        quality and
+                        industry-leading noise cancellation
+                        with
+                        these wireless headphones. Perfect for music lovers and frequent travelers.</p>
+
+                    <!-- Production Phases -->
+                    <div th:if="*{productionPhases  != null}">
+                        <p class="text-2xl font-bold mb-4"> Phases</p>
+                        <p th:text="*{productionPhases}" class="text-gray-700 mb-6 text-lg">
+                            Experience premium sound
+                            quality and
+                            industry-leading noise cancellation
+                            with
+                            these wireless headphones. Perfect for music lovers and frequent travelers.</p>
+                    </div>
+                    <div class="flex space-x-4 mb-6" th:if="${user.getSimpleRole()} == 'BUYER'">
+                        <form th:action="@{/cart/{uuid}(uuid=*{id})}" th:method="POST">
+                            <button type="submit"
+                                    class="inline-flex items-center rounded-lg bg-blue-700 text-white hover:bg-blue-800 focus:ring-blue-300 px-5 py-2.5 text-base font-medium transition-colors duration-300">
+                                <svg class="-ms-2 me-2 h-5 w-5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg"
+                                     width="24" height="24" fill="none" viewBox="0 0 24 24">
+                                    <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"
+                                          stroke-width="2"
+                                          d="M4 4h1.5L8 16m0 0h8m-8 0a2 2 0 1 0 0 4 2 2 0 0 0 0-4Zm8 0a2 2 0 1 0 0 4 2 2 0 0 0 0-4Zm.75-3H7.5M11 7H6.312M17 4v6m-3-3h6"/>
+                                </svg>
+                                Add to cart
+                            </button>
+                        </form>
+                    </div>
+                    <!-- Certification download -->
+                    <div class="flex flex-col">
+                        <h2 class="text-black font-bold text-4xl mb-4">Certificate</h2>
+                        <div th:if="${product.certificate == null}">
+                            <p>NO CERTIFICATE FOR THIS PRODUCT</p>
+                        </div>
+                        <div th:if="${product.certificate != null}" class="flex flex-1 space-x-2">
+                            <form th:action="@{/certificate/download/{id}(id=${product.certificate.id})}">
+                                <button type="submit"
+                                        class="inline-flex items-center rounded-lg bg-blue-700 text-white hover:bg-blue-800 focus:ring-blue-300 px-5 py-2.5 text-base font-medium transition-colors duration-300">
+                                    <svg class="-ms-2 me-2 h-5 w-5" xmlns="http://www.w3.org/2000/svg" fill="none"
+                                         viewBox="0 0 24 24"
+                                         stroke-width="1.5" stroke="currentColor">
+                                        <path stroke-linecap="round" stroke-linejoin="round"
+                                              d="M3 16.5v2.25A2.25 2.25 0 0 0 5.25 21h13.5A2.25 2.25 0 0 0 21 18.75V16.5M16.5 12 12 16.5m0 0L7.5 12m4.5 4.5V3"/>
+                                    </svg>
+                                    Download
+                                </button>
+                            </form>
+                            <div th:if="${user.getSimpleRole() == 'DISTRIBUTOR'
+                                            or user.getSimpleRole() == 'TRANSFORMER'
+                                            or user.getSimpleRole() == 'PRODUCER'
+                                            or user.getSimpleRole() == 'TRUSTEE'}">
+                                <form th:action="@{/certificate/{id}(id=${product.getCertificate().getId()})}"
+                                      th:method="delete">
+                                    <button type="submit"
+                                            class="inline-flex items-center rounded-lg bg-red-700 text-white hover:bg-red-800 focus:ring-red-300 px-5 py-2.5 text-base font-medium transition-colors duration-300">
+                                        Delete
+                                    </button>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+</html>

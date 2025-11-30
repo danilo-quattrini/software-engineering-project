@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<div th:fragment="card-image" class="h-64 w-full">
+    <img class="mx-auto h-full dark:hidden rounded-lg"
+         src="https://picsum.photos/seed/120/120" alt=""/>
+    <img class="mx-auto hidden h-full dark:block rounded-lg"
+         src="https://picsum.photos/120/120" alt=""/>
+</div>
+</body>
+</html>

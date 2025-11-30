@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{product/components/head :: head('Cart')}"></head>
+<body class="bg-gray-50">
+<div th:replace="~{product/components/navbar/navigation-bar :: navigation(${user.getSimpleRole()})}"></div>
+<section class="py-8 antialiased">
+    <div th:if="${favorites.size() == 0}">
+        <div class="bg-white rounded-md px-[96px] py-[80px] shadow flex flex-col justify-center items-center max-w-fit mx-auto space-y-[16px]">
+            <h1 class="text-5xl text-black font-bold">Empty Favorite Items List</h1>
+            <a th:replace="~{product/components/form/button :: button('Go Back', '/products', 'red')}"> </a>
+        </div>
+    </div>
+    <div th:if="${favorites.size() > 0}" class="mx-auto max-w-screen-xl px-4 2xl:px-0">
+        <h2 class="text-5xl text-black mb-2 font-bold">Favorites List</h2>
+        <hr class="my-5 w-[500px] text-white"/>
+        <div class="mt-6 sm:mt-8 md:gap-6 lg:flex lg:items-start xl:gap-8">
+            <div class="w-full flex-none lg:max-w-2xl xl:max-w-4xl">
+                <!-- Product Element -->
+                <div class="space-y-6">
+                    <div th:each="item : ${favorites}"
+                         class="rounded-lg border border-gray-200 bg-white p-4 shadow-sm   md:p-6">
+                        <div class="space-y-4 md:flex md:items-center md:justify-between md:gap-6 md:space-y-0">
+                            <div class="shrink-0 md:order-1">
+                                <img class="h-24 w-24 rounded-lg"
+                                     src="https://picsum.photos/seed/120/120" alt=""/>
+                            </div>
+
+                            <div class="flex items-center justify-between md:order-3 md:justify-end">
+                                <div class="text-end md:order-4 md:w-32">
+                                    <h2 class="text-lg font-bold text-gray-900">Price:</h2>
+                                    <p th:text="${item.getPrice()} + '€'"
+                                       class="text-base font-bold text-gray-900">$1,499</p>
+                                </div>
+                            </div>
+
+                            <div class="w-full min-w-0 flex-1 space-y-4 md:order-2 md:max-w-md">
+                                <h2 th:text="${item.getName()}"
+                                    class="text-lg font-bold text-gray-900"></h2>
+                                <p th:text="${item.getDescription()}"
+                                   class="text-base font-medium text-gray-900">PC
+                                    system All in One APPLE iMac (2023) mqrq3ro/a, Apple M3, 24" Retina 4.5K, 8GB, SSD
+                                    256GB, 10-core GPU, Keyboard layout INT</p>
+                            </div>
+                            <div class="flex items-center md:order-5 ml-auto pr-4">
+                                <form th:action="@{/favorites/remove/{uuid}(uuid=*{item.getId()})}"
+                                      th:method="POST">
+                                    <button type="submit" class="p-2">
+                                        <svg
+                                                class="size-6"
+                                                xmlns="http://www.w3.org/2000/svg"
+                                                fill="red"
+                                                viewBox="0 0 24 24">
+                                            <path stroke="red" stroke-linecap="round" stroke-linejoin="round"
+                                                  stroke-width="2"
+                                                  d="M12 6C6.5 1 1 8 5.8 13l6.2 7 6.2-7C23 8 17.5 1 12 6Z"/>
+                                        </svg>
+                                    </button>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+</body>
+</html>

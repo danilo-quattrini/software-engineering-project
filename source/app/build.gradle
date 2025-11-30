@@ -28,6 +28,7 @@ dependencies {
     implementation project(":location")
     implementation project(":osm")
     implementation project(":paymentsystem")
+    implementation project(':products')
     implementation project(":rest")
     implementation project(":users")
 }

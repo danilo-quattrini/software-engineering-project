@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{product/components/head :: head('Marketplace')}"></head>
+<body class="bg-gray-50">
+<div th:replace="~{product/components/navbar/navigation-bar :: navigation(${user.getSimpleRole()})}"></div>
+<section class=" py-8 antialiased md:py-12 h-full">
+    <div class="mx-auto max-w-screen-xl px-4 2xl:px-0">
+        <!-- Bundle Title -->
+        <h1 class="text-5xl text-black mb-5 font-bold" th:text="${bundle.name}"></h1>
+        <hr class="my-5 w-[500px] text-white"/>
+        <div class="mt-8">
+            <h2 class="text-3xl font-bold mb-4">Prodotti nel Bundle</h2>
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                <div th:each="product : ${products}" class="p-4 bg-white border rounded-lg shadow">
+                    <!-- PRODUCT IMAGE -->
+                    <div th:replace="~{product/components/card/card-image :: card-image}"></div>
+                    <h3 class="text-xl font-semibold mt-3" th:text="${product.name}"></h3>
+                    <p class="w-fit text-sm font-medium text-black border border-black rounded-lg py-1 px-2 mt-3"
+                       th:text="${product.category}"></p>
+                    <p class="font-semibold text-black mt-3" th:text="${product.price + ' €'}"></p>
+                    <a th:href="@{/products/{uuid}(uuid=${product.id})}"
+                       class="text-blue-600 underline mt-4 inline-block">Vedi prodotto</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+</body>
+</html>
