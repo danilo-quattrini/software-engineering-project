@@ -1,0 +1,11 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{product/components/head :: head('Marketplace')}"></head>
+<body class="bg-gray-50">
+<div th:replace="~{product/components/navbar/navigation-bar :: navigation(${user.getSimpleRole()})}"></div>
+<section class="py-8 antialiased md:py-12">
+<h2>Il tuo saldo</h2>
+<p th:text="${balance}"></p>
+</section>
+</body>
+</html>

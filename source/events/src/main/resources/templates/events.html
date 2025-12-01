@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="it" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1"/>
+    <meta name="_csrf" th:content="${_csrf.token}"/>
+    <meta name="_csrf_header" th:content="${_csrf.headerName}"/>
+    <title>Eventi</title>
+    <link rel="stylesheet" th:href="@{/css/app.css}"/>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/flowbite@4.0.1/dist/flowbite.min.js"></script>
+</head>
+<body>
+<div th:replace="~{/product/components/navbar/navigation-bar :: navigation(${user.getSimpleRole()})}"></div>
+<div id="events-root"
+     class="layout layout--wide"
+     th:attr="data-user-id=${currentUserId},
+              data-user-role=${currentUserRole}">
+
+    <header class="page-header">
+        <div class="page-header__top" style="display:flex;justify-content:space-between;align-items:center;gap:1rem;">
+            <div>
+                <h1 class="page-title">Eventi</h1>
+                <p class="page-subtitle">
+                    Consulta gli eventi attivi, prenota o gestisci le tue iniziative direttamente da questa pagina.
+                </p>
+            </div>
+
+            <a th:if="${currentUserRole == 'ENTERTAINER'}"
+               th:href="@{/events/create}"
+               class="button button--primary">
+                Crea evento
+            </a>
+        </div>
+    </header>
+
+    <div id="event-feedback" class="alert" hidden></div>
+
+    <section class="card">
+        <div class="card__header">
+            <h2 class="card__title">Eventi disponibili</h2>
+            <p class="card__description">
+                Tutte le informazioni principali sull'evento e le azioni consentite in base al tuo ruolo.
+            </p>
+        </div>
+        <div id="events-container" class="event-grid">
+            <p class="text-muted">Caricamento in corso...</p>
+        </div>
+    </section>
+</div>
+
+<script th:inline="javascript">
+    window.eventsPageConfig = {
+        currentUserId: [[${currentUserId}]],
+        currentUserEmail: [[${currentUserEmail}]],
+        currentUserRole: [[${currentUserRole}]],
+        eventTypes: [[${eventTypes}]],
+        eventStates: [[${eventStates}]]
+    };
+</script>
+<script th:src="@{/js/events.js}"></script>
+</body>
+</html>
