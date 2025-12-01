@@ -435,11 +435,42 @@
         if (currentUserRole === 'BUYER' && currentUserId && !includesId(event.buyerIds, currentUserId)) {
             const row = document.createElement('div');
             row.className = 'event-card__form-row';
+
             const orderLink = document.createElement('a');
             orderLink.className = 'button';
             orderLink.href = `/psp/paymentdemo/payment?referenceId=${event.id}`;
             orderLink.textContent = `Acquista evento (${formatCurrency(event.price, event.currencyCode)})`;
             orderLink.setAttribute('rel', 'noopener noreferrer');
+
+            orderLink.addEventListener('click', async (e) => {
+                e.preventDefault();
+
+                if (!currentUserId) {
+                    showFeedback('Utente non identificato.', 'error');
+                    return;
+                }
+
+                try {
+                    await sendRequest(`${API_BASE}/${event.id}/buyers/${currentUserId}/bookings`, 'POST');
+
+                    const cached = findEvent(event.id);
+                    if (cached) {
+                        if (!Array.isArray(cached.buyerIds)) {
+                            cached.buyerIds = [];
+                        }
+                        if (!cached.buyerIds.some(id => String(id) === String(currentUserId))) {
+                            cached.buyerIds.push(currentUserId);
+                        }
+                    }
+
+                    await loadEvents();
+
+                    window.location.href = orderLink.href;
+                } catch (err) {
+                    showFeedback(err.message || 'Errore durante la prenotazione.', 'error');
+                }
+            });
+
             row.appendChild(orderLink);
             actions.appendChild(row);
             hasAction = true;
