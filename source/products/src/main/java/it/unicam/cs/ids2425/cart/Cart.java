@@ -33,9 +33,9 @@ public class Cart extends Referable {
     }
 
     public void updateTotal() {
-        setAmount(Math.floor(cartItems.stream()
+        setAmount(cartItems.stream()
                 .mapToDouble(item -> item.getProductQuantity() * item.getCartItemProduct().getPrice())
-                .sum()));
+                .sum());
     }
 
 
