@@ -81,13 +81,16 @@ public class BundleController {
     }
 
     @GetMapping
-    public String index(Model model) {
+    @PreAuthorize("hasAnyRole('DISTRIBUTOR', 'BUYER')")
+    public String index(Model model)
+    {
         model.addAttribute("bundle", bundleOperation.getAllBundle());
         return "bundle/list";
     }
 
 
     @GetMapping("/{id}")
+    @PreAuthorize("hasAnyRole('DISTRIBUTOR', 'BUYER')")
     public String show(@PathVariable("id") Long id, Model model) {
         model.addAttribute("bundle", bundleOperation.getById(id));
         model.addAttribute("products", bundleOperation.getById(id).getProductList());

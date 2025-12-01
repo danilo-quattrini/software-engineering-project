@@ -20,13 +20,20 @@
                         or user.getSimpleRole() == 'TRANSFORMER'
                         or user.getSimpleRole() == 'PRODUCER'}" th:href="@{/products}"
                        class="text-dark text-lg font-semibold hover:text-orange-600 mr-4">Product Dashboard</a>
-                    <a th:href="@{/events}"
+                    <a  th:if="${user.getSimpleRole() == 'DISTRIBUTOR'
+                        or user.getSimpleRole() == 'TRANSFORMER'
+                        or user.getSimpleRole() == 'PRODUCER'
+                        or user.getSimpleRole() == 'BUYER'
+                        or user.getSimpleRole() == 'ENTERTAINER'}" th:href="@{/events}"
                        class="text-dark text-lg font-semibold hover:text-orange-600 mr-4">Events</a>
-                    <a th:href="@{/osm/sellersmap}"
+                    <a th:if="${user.getSimpleRole() == 'DISTRIBUTOR'
+                        or user.getSimpleRole() == 'TRANSFORMER'
+                        or user.getSimpleRole() == 'PRODUCER'
+                        or user.getSimpleRole() == 'BUYER'}" th:href="@{/osm/sellersmap}"
                        class="text-dark text-lg font-semibold hover:text-orange-600 mr-4">OSM</a>
                     <a th:if="${role} == 'TRUSTEE'" th:href="@{/products/review}"
                        class="text-dark text-lg font-semibold hover:text-orange-600 mr-4">Products To Approve</a>
-                    <a th:if="${role} != 'DISTRIBUTOR'" th:href="@{/bundle}"
+                    <a th:if="${user.getSimpleRole() == 'BUYER'}" th:href="@{/bundle}"
                        class="text-dark text-lg font-semibold hover:text-orange-600 mr-4">Bundle</a>
                     <a th:if="${role} == 'DISTRIBUTOR'" th:href="@{/bundle/dashboard}"
                        class="text-dark text-lg font-semibold hover:text-orange-600 mr-4">Bundle Dashboard</a>
@@ -171,17 +178,35 @@
                         or user.getSimpleRole() == 'PRODUCER'
                         or user.getSimpleRole() == 'TRUSTEE'}" th:href="@{/products}"
                        class="text-dark text-lg font-semibold hover:text-orange-600 mr-4">Product Dashboard</a>
-                    <a th:href="@{/events}"
+                    <a th:if="${user.getSimpleRole() == 'DISTRIBUTOR'
+                        or user.getSimpleRole() == 'TRANSFORMER'
+                        or user.getSimpleRole() == 'PRODUCER'
+                        or user.getSimpleRole() == 'BUYER'
+                        or user.getSimpleRole() == 'ENTERTAINER'}" th:href="@{/events}"
                        class="text-dark text-lg font-semibold hover:text-orange-600 mb-1">Events</a>
-                    <a th:href="@{/osm/sellersmap}"
+                    <a th:if="${user.getSimpleRole() == 'DISTRIBUTOR'
+                        or user.getSimpleRole() == 'TRANSFORMER'
+                        or user.getSimpleRole() == 'PRODUCER'
+                        or user.getSimpleRole() == 'BUYER'}" th:href="@{/osm/sellersmap}"
                        class="text-dark text-lg font-semibold hover:text-orange-600 mb-1">OSM</a>
                     <a th:if="${role} == 'TRUSTEE'" th:href="@{/products/review}"
                        class="text-dark text-lg font-semibold hover:text-orange-600 mb-1">Products To Approve</a>
-                    <a th:if="${role} != 'DISTRIBUTOR'" th:href="@{/bundle}"
+                    <a th:if="${user.getSimpleRole() == 'BUYER'}" th:href="@{/bundle}"
                        class="text-dark text-lg font-semibold hover:text-orange-600 mr-4">Bundle</a>
                     <a th:if="${role} == 'DISTRIBUTOR'" th:href="@{/bundle/dashboard}"
                        class="text-dark text-lg font-semibold hover:text-orange-600 mr-4">Bundle Dashboard</a>
-
+                    <a th:if="${role} == 'PRODUCER'" th:href="@{/products/seller/balance}"
+                       class="text-dark text-lg font-semibold hover:text-orange-600 mr-4">Saldo</a>
+                    <a th:if="${role} == 'TRANSFORMER'" th:href="@{/products/seller/balance}"
+                       class="text-dark text-lg font-semibold hover:text-orange-600 mr-4">Saldo</a>
+                    <a th:if="${role} == 'DISTRIBUTOR'" th:href="@{/products/seller/balance}"
+                       class="text-dark text-lg font-semibold hover:text-orange-600 mr-4">Saldo</a>
+                    <a th:if="${role} == 'ENTERTAINER'" th:href="@{/events/entertainer/balance}"
+                       class="text-dark text-lg font-semibold hover:text-orange-600 mr-4">Saldo</a>
+                    <a th:if="${role} == 'ADMIN'" th:href="@{/users/admin/dashboard}"
+                       class="text-dark text-lg font-semibold hover:text-orange-600 mr-4">Utenti</a>
+                    <a th:if="${role} == 'ADMIN'" th:href="@{/payments/admin/dashboard}"
+                       class="text-dark text-lg font-semibold hover:text-orange-600 mr-4">Pagamenti</a>
                     <div class="flex justify-between items-center border-t-2 pt-2">
                         <!-- Favorites List full width-->
                         <a th:if="${role} == 'BUYER'" th:href="@{/favorites}"
