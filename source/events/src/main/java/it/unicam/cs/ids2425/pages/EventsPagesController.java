@@ -29,7 +29,7 @@ public class EventsPagesController {
         populateCommonAttributes(model, authentication);
         model.addAttribute("eventTypes", EventType.values());
         model.addAttribute("eventStates", EventState.values());
-        return "it/unicam/cs/ids2425/pages/events";
+        return "events";
     }
 
     @PreAuthorize("hasRole('ENTERTAINER')")
@@ -37,7 +37,7 @@ public class EventsPagesController {
     public String createEventPage(Model model, Authentication authentication) {
         populateCommonAttributes(model, authentication);
         model.addAttribute("eventTypes", EventType.values());
-        return "it/unicam/cs/ids2425/pages/create-event";
+        return "create-event";
     }
 
     private void populateCommonAttributes(Model model, Authentication authentication) {

@@ -33,7 +33,7 @@ public class EntertainerBalanceController {
 
         model.addAttribute("balance", balance);
 
-        return "it/cs/ids2425/pages/entertainerbalance";
+        return "entertainerbalance";
     }
 
 
