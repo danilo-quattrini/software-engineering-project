@@ -55,9 +55,14 @@
                 </select>
             </div>
 
-            <div class="form-field">
-                <label>Mappa posizione</label>
-                <div id="map" style="height: 400px;"></div>
+            <div class="form-field form-field--wide map-field">
+                <div class="map-field__header">
+                    <label for="map">Mappa posizione</label>
+                    <p class="map-hint">Clicca sulla mappa o cerca un indirizzo per impostare il punto dell'evento.</p>
+                </div>
+                <div class="map-field__container">
+                    <div id="map" class="map-field__canvas"></div>
+                </div>
             </div>
 
             <!-- Hidden fields per la Location -->
@@ -93,10 +98,10 @@
         integrity="sha256-vxo9QF3vjuFQFZr+MYg2tY2mHv1lHVZ9d2XpypY4q0M=" crossorigin=""></script>
 
 <script type="module">
-    import MapComponent from '/js/it/unicam/cs/carlo/osm/map-component.js';
-    import { addEventLocationOnClick } from '/js/it/unicam/cs/carlo/osm/modules/event-location/addEventLocationOnClick.js';
-    import { addEventLocationByAddress } from '/js/it/unicam/cs/carlo/osm/modules/event-location/addEventLocationByAddress.js';
-    import { loadEventsMarkers } from '/js/it/unicam/cs/carlo/osm/modules/event-location/loadEventsMarkers.js';
+    import MapComponent from '/js/osm/map-component.js';
+    import { addEventLocationOnClick } from '/js/osm/modules/event-location/addEventLocationOnClick.js';
+    import { addEventLocationByAddress } from '/js/osm/modules/event-location/addEventLocationByAddress.js';
+    import { loadEventsMarkers } from '/js/osm/modules/event-location/loadEventsMarkers.js';
 
     const map = new MapComponent('map', {
         center: [41.9028, 12.4964],

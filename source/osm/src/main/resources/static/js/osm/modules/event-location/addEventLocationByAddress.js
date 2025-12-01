@@ -21,8 +21,13 @@ export function addEventLocationByAddress(mapComponent) {
                 const lng = parseFloat(result.lon);
                 const address = result.display_name;
 
+                if (mapComponent.selectedLocationMarker) {
+                    mapComponent.map.removeLayer(mapComponent.selectedLocationMarker);
+                }
+
                 // Aggiunge marker e centra la mappa
-                L.marker([lat, lng]).addTo(mapComponent.map)
+                mapComponent.selectedLocationMarker = L.marker([lat, lng])
+                    .addTo(mapComponent.map)
                     .bindPopup(address)
                     .openPopup();
                 mapComponent.map.setView([lat, lng], 16);

@@ -38,7 +38,7 @@ public class EventService {
 
     public EventResponse createEvent(String email, EventRequest request) {
         User user = userRepository.findByEmail(email)
-                .orElseThrow(() -> new IllegalStateException("User with email " + email + " does not exist"));
+                .orElseThrow(() -> notFound("Non abbiamo trovato alcun utente registrato con l'email " + email));
 
         validateChronology(request.startDateTime(), request.endDateTime());
 
@@ -119,7 +119,7 @@ public class EventService {
         ensureEventIsActive(event);
         Buyer buyer = getUser(buyerId, Buyer.class);
         if (event.hasBuyer(buyer)) {
-            throw new IllegalStateException("Buyer has already booked this event");
+            throw badRequest("Hai già prenotato questo evento");
         }
         event.addBuyer(buyer);
         return EventResponse.from(event);
@@ -132,7 +132,7 @@ public class EventService {
         Seller seller = getSeller(sellerId);
 
         if (event.isSellerConfirmed(seller)) {
-            throw new IllegalStateException("Seller has already accepted this invitation");
+            throw badRequest("Il venditore ha già accettato l'invito");
         }
 
         if (!event.isSellerInvited(seller)) {
@@ -149,7 +149,7 @@ public class EventService {
         Seller seller = getSeller(sellerId);
 
         if (!event.isSellerInvited(seller)) {
-            throw new IllegalStateException("Seller has not been invited to this event");
+            throw badRequest("Il venditore non è stato invitato a questo evento");
         }
 
         if (!event.isSellerConfirmed(seller)) {
@@ -170,7 +170,7 @@ public class EventService {
 
         if (seller != null) {
             if (event.isSellerConfirmed(seller)) {
-                throw new IllegalStateException("Seller has already accepted this invitation");
+                throw badRequest("Il venditore ha già accettato l'invito");
             }
 
             if (!event.isSellerInvited(seller)) {
@@ -183,18 +183,15 @@ public class EventService {
         User user = getUserByEmail(email);
 
         if (user instanceof Buyer) {
-            throw new IllegalStateException("I buyer possono acquistare autonomamente gli eventi e non necessitano di un invito");
+            throw badRequest("I buyer possono acquistare autonomamente gli eventi e non necessitano di un invito");
         }
 
-        throw new ResponseStatusException(
-                HttpStatus.BAD_REQUEST,
-                "L'utente con email " + email + " non è un seller e non può essere invitato all'evento"
-        );
+        throw badRequest("L'utente con email " + email + " non è un seller e non può essere invitato all'evento");
     }
 
     private Event getEventById(Long eventId) {
         return eventRepository.findById(eventId)
-                .orElseThrow(() -> new IllegalStateException("Event with id " + eventId + " does not exist"));
+                .orElseThrow(() -> notFound("Non abbiamo trovato l'evento richiesto (id " + eventId + ")"));
     }
 
     private Event getEventForManagement(Long userId, Long eventId) {
@@ -205,39 +202,42 @@ public class EventService {
 
     private void ensureOwnership(Event event, Long userId) {
         if (event.getEntertainer() == null || !Objects.equals(event.getEntertainer().getId(), userId)) {
-            throw new IllegalStateException("User " + userId + " cannot manage this event");
+            throw new ResponseStatusException(
+                    HttpStatus.FORBIDDEN,
+                    "Non hai i permessi per gestire questo evento"
+            );
         }
     }
 
     private void validateChronology(LocalDateTime start, LocalDateTime end) {
         if (start == null || end == null) {
-            throw new IllegalArgumentException("Both start and end date must be provided");
+            throw badRequest("Devi fornire sia la data di inizio sia quella di fine");
         }
         if (end.isBefore(start)) {
-            throw new IllegalArgumentException("Event end date cannot be before the start date");
+            throw badRequest("La data di fine evento non può precedere quella di inizio");
         }
     }
 
     private void ensurePositivePrice(BigDecimal price) {
         if (price.compareTo(BigDecimal.ZERO) < 0) {
-            throw new IllegalArgumentException("Event price cannot be negative");
+            throw badRequest("Il prezzo dell'evento deve essere positivo");
         }
     }
 
     private void ensureEventIsActive(Event event) {
         if (event.getState() == EventState.CANCELLED || event.getState() == EventState.ARCHIVED) {
-            throw new IllegalStateException("Cannot book or invite for an event that is not active");
+            throw badRequest("Non è possibile prenotare o invitare per un evento non attivo");
         }
     }
 
     private User getUserByEmail(String email) {
         return userRepository.findByEmail(email)
-                .orElseThrow(() -> new IllegalStateException("User with email " + email + " does not exist"));
+                .orElseThrow(() -> notFound("Non abbiamo trovato alcun utente registrato con l'email " + email));
     }
 
     private Seller getSeller(Long sellerId) {
         User user = getUserById(sellerId);
-        return toSeller(user, () -> "User with id " + sellerId + " is not a seller");
+        return toSeller(user, () -> "L'utente con id " + sellerId + " non è un seller e non può essere invitato");
     }
 
     private Seller getSellerByEmail(String email) {
@@ -250,13 +250,13 @@ public class EventService {
 
     private User getUserById(Long userId) {
         return userRepository.findById(userId)
-                .orElseThrow(() -> new IllegalStateException("User with id " + userId + " does not exist"));
+                .orElseThrow(() -> notFound("Non abbiamo trovato l'utente richiesto (id " + userId + ")"));
     }
 
     private <T extends User> T getUser(Long userId, Class<T> type) {
         User user = getUserById(userId);
         if (!type.isInstance(user)) {
-            throw new IllegalStateException("User with id " + userId + " is not a " + type.getSimpleName());
+            throw badRequest("L'utente con id " + userId + " non è un " + type.getSimpleName());
         }
         return type.cast(user);
     }
@@ -265,6 +265,14 @@ public class EventService {
         if (user instanceof Seller seller && SELLER_ROLES.contains(user.getSimpleRole())) {
             return seller;
         }
-        throw new IllegalStateException(errorMessageSupplier.get());
+        throw badRequest(errorMessageSupplier.get());
+    }
+
+    private ResponseStatusException badRequest(String message) {
+        return new ResponseStatusException(HttpStatus.BAD_REQUEST, message);
+    }
+
+    private ResponseStatusException notFound(String message) {
+        return new ResponseStatusException(HttpStatus.NOT_FOUND, message);
     }
 }

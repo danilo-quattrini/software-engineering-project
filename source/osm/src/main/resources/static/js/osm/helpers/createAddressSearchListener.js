@@ -31,8 +31,7 @@ export function createAddressSearchListener(inputElement, suggestionBox, onSelec
 
             results.forEach(r => {
                 const item = document.createElement('div');
-                item.className =
-                    "px-3 py-2 border-b border-gray-200 hover:bg-gray-100 cursor-pointer";
+                item.className = 'address-suggestion';
                 item.textContent = r.display_name;
 
                 item.addEventListener('click', () => {

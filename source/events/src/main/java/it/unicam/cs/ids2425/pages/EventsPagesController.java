@@ -43,6 +43,7 @@ public class EventsPagesController {
     private void populateCommonAttributes(Model model, Authentication authentication) {
         Long currentUserId = null;
         String currentUserRole = null;
+        String currentUserEmail = null;
 
         if (authentication != null) {
             Optional<User> optionalUser = userRepository.findByEmail(authentication.getName());
@@ -50,10 +51,12 @@ public class EventsPagesController {
                 User user = optionalUser.get();
                 currentUserId = user.getId();
                 currentUserRole = user.getClass().getSimpleName().toUpperCase();
+                currentUserEmail = user.getEmail();
             }
         }
 
         model.addAttribute("currentUserId", currentUserId);
         model.addAttribute("currentUserRole", currentUserRole);
+        model.addAttribute("currentUserEmail", currentUserEmail);
     }
 }

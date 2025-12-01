@@ -46,7 +46,18 @@
             if (!text) {
                 return `Errore ${response.status}`;
             }
-            return text;
+            const contentType = response.headers.get('Content-Type') || '';
+            if (contentType.includes('application/json')) {
+                try {
+                    const data = JSON.parse(text);
+                    if (data && typeof data.message === 'string' && data.message.trim()) {
+                        return data.message;
+                    }
+                } catch (jsonError) {
+                    // fallback to text parsing below
+                }
+            }
+            return text.trim();
         } catch (error) {
             return `Errore ${response.status}`;
         }
@@ -421,34 +432,17 @@
         actions.className = 'event-card__actions';
         let hasAction = false;
 
-        if (currentUserRole === 'BUYER' && currentUserId) {
-            if (includesId(event.buyerIds, currentUserId)) {
-                const row = document.createElement('div');
-                row.className = 'event-card__form-row';
-                const info = document.createElement('p');
-                info.className = 'text-muted';
-                info.textContent = 'Hai già acquistato questo evento.';
-                row.appendChild(info);
-                actions.appendChild(row);
-            } else {
-                const form = document.createElement('form');
-                form.className = 'event-card__form';
-                form.dataset.action = 'book';
-                form.dataset.eventId = event.id;
-                form.dataset.paymentUrl = `/psp/paymentdemo/payment?referenceId=${event.id}`;
-
-                const row = document.createElement('div');
-                row.className = 'event-card__form-row';
-                const orderButton = document.createElement('button');
-                orderButton.type = 'submit';
-                orderButton.className = 'button';
-                orderButton.textContent = `Acquista evento (${formatCurrency(event.price, event.currencyCode)})`;
-                row.appendChild(orderButton);
-
-                form.appendChild(row);
-                actions.appendChild(form);
-                hasAction = true;
-            }
+        if (currentUserRole === 'BUYER' && currentUserId && !includesId(event.buyerIds, currentUserId)) {
+            const row = document.createElement('div');
+            row.className = 'event-card__form-row';
+            const orderLink = document.createElement('a');
+            orderLink.className = 'button';
+            orderLink.href = `/psp/paymentdemo/payment?referenceId=${event.id}`;
+            orderLink.textContent = `Acquista evento (${formatCurrency(event.price, event.currencyCode)})`;
+            orderLink.setAttribute('rel', 'noopener noreferrer');
+            row.appendChild(orderLink);
+            actions.appendChild(row);
+            hasAction = true;
         }
 
         if (sellerRoles.includes(currentUserRole) && currentUserId &&
