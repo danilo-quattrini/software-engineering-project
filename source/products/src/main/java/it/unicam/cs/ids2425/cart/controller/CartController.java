@@ -35,23 +35,24 @@ public class CartController {
     public Cart currentCart() {
         Long cartId = getSessionCartId();
 
-        Cart cart;
+        Cart cart = null;
         if (cartId != null) {
-            cart = cartOperation.getCart(cartId);
-        } else {
-            cart = cartOperation.createCart();
-            session.setAttribute(SESSION_CART_ID, cart.getId());
+            if (paymentService.getByReferenceId(cartId).isPresent()){
+                cart = cartOperation.createCart();
+            }else{
+               cart =  cartOperation.getCart(cartId);
+            }
         }
+        if(cart == null){
+            cart = cartOperation.createCart();
+        }
+        session.setAttribute(SESSION_CART_ID, cart.getId());
         return cart;
     }
 
     @GetMapping("/items")
     @PreAuthorize("hasAnyRole('BUYER')")
     public String index(Model model, @ModelAttribute("cart") Cart cart) {
-        if (paymentService.getByReferenceId(cart.getId()).isPresent()) {
-            cart = cartOperation.createCart();
-            session.setAttribute(SESSION_CART_ID, cart.getId());
-        }
         model.addAttribute("cart", cart);
         return "cart/index";
     }
