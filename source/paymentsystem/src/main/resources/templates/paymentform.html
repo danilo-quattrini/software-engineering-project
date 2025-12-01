@@ -24,14 +24,18 @@
             document.querySelector('#lng').value = longitude;
         }
 
+        const deliveryState = {
+            currentMarker: null
+        };
+
         window.initMap = function () {
             const map = new MapComponent('map', {
                 center: [41.9028, 12.4964],
                 zoom: 6
             });
 
-            map.use((mc) => addDeliveryPointOnClick(mc, updateFormFields));
-            map.use((mc) => addDeliveryPointByAddress(mc, updateFormFields));
+            map.use((mc) => addDeliveryPointOnClick(mc, updateFormFields, deliveryState));
+            map.use((mc) => addDeliveryPointByAddress(mc, updateFormFields, deliveryState));
         };
     </script>
 
