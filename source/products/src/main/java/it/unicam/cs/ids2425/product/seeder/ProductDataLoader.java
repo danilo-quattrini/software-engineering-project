@@ -65,10 +65,7 @@ public class ProductDataLoader implements CommandLineRunner {
             Integer quantity = rnd.nextInt(1, 99);
             String description = productDescription.get(rnd.nextInt(productDescription.size()));
             // Date generator
-            int year = rnd.nextInt(2025, LocalDate.now().getYear() + 1);
-            int month = rnd.nextInt(LocalDate.now().getMonthValue() + 1, 13);
-            int day = rnd.nextInt(LocalDate.now().getDayOfMonth() + 1, 32);
-            LocalDate expireDate = LocalDate.of(year, month, day);
+            LocalDate expireDate = LocalDate.now().plusDays(rnd.nextInt(1,366));
             Category category = productCategory.get(rnd.nextInt(productCategory.size()));
 
             Product product = new Product(name, price, quantity, description, expireDate, category);
