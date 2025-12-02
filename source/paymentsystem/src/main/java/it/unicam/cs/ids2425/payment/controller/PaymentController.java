@@ -43,7 +43,7 @@ public class PaymentController implements PaymentControllerInterface {
 
     @GetMapping("/reference/{referenceId}")
     @Override
-    public Optional<Payment> getByReferenceId(@PathVariable("referenceId") Long referenceId) {
+    public List<Payment> getByReferenceId(@PathVariable("referenceId") Long referenceId) {
         return paymentService.getByReferenceId(referenceId);
     }
 

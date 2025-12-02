@@ -39,7 +39,7 @@ public class PaymentService implements PaymentServiceInterface {
     }
 
     @Override
-    public Optional<Payment> getByReferenceId(Long referenceId) {
+    public List<Payment> getByReferenceId(Long referenceId) {
         return paymentRepository.findByReferenceId(referenceId);
     }
 
