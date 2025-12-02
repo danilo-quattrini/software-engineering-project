@@ -10,15 +10,15 @@ This project is a team-based task management application developed as part of a 
 
 # Description
 
-The project consists of a marketplace selling goods from an agricultural supply chain, such as typical products and bundles of food. <br>
+The project consists of a marketplace selling goods from an agricultural supply chain, such as typical products and bundles of food.<br>
 Various actors are involved, each representing the following roles in the platform:
 
 - Producer
 - Transformer
 - Distributor
 - Trustee
-- Event planner
-- Customer
+- Entertainer
+- Buyer
 - Admin
 
 # Setup
@@ -26,7 +26,8 @@ Various actors are involved, each representing the following roles in the platfo
 ## Requirements
 
 - JDK 21
-- Gradle 8.5 and after
+- PostgreSQL
+- Gradle 8.5 and after (if the web application is executed with the cli)
 
 ## Clone repository
 
@@ -34,6 +35,29 @@ Various actors are involved, each representing the following roles in the platfo
 $ git clone https://github.com/danilo-quattrini/software-engineering-project.git
 $ cd software-engineering-project
 ```
+
+## Configuration
+
+### Creating and connecting to a PostgreSQL DB
+
+- `$ psql` to enter PostgreSQL
+- `$ \l` to list all db
+- `$ CREATE DATABASE {db_name};` to create a db
+- `$ \du` to see the roles
+- `$ GRANT ALL PRIVILEGES ON DATABASE "{db_name}" TO {user_name}` (give also all privileges to user postgres)
+- `$ \c {db_name}` to connect to a db
+- `$ \d` to see the relations inside a db
+- `$ \d {table_name}` to describe a table
+- `$ SELECT * FROM {table_name}` to retrieve all elemets from a table
+
+### Writing the `application.properties` file
+
+See the `app/resources/application.properties.example` file to see the configuration of the application.<br>
+A postgre database is recommended.<br>
+The project is also compatible with h2.<br>
+Specify the db driver.<br>
+Use `secured` as security profile.<br>
+After everything is setup, delete `example` from `app/resources/application.properties.example` (`app/resources/application.properties`)
 
 ## Build and run
 
@@ -44,9 +68,9 @@ $ ./gradlew bootRun
 
 # Team Members
 
-- Danilo Quattrini
-- Christian De Vincentis
-- Carlo Alberto Savi
+- [Danilo Quattrini](https://github.com/danilo-quattrini)
+- [Christian De Vincentis](https://github.com/PPathfinderIV)
+- [Carlo Alberto Savi](https://github.com/olracrafter)
 
 # Contributing
 
