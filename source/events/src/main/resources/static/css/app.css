@@ -321,6 +321,14 @@ map-field {
     gap: 0.75rem;
 }
 
+.event-card__footer {
+    margin-top: 0.5rem;
+}
+
+.event-card__footer .button {
+    width: 100%;
+}
+
 .event-card details {
     background: #ffffff;
     border-radius: 0.75rem;

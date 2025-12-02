@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="it" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1"/>
+    <title th:text="${event.title} ?: 'Evento'">Evento</title>
+    <link rel="stylesheet" th:href="@{/css/app.css}"/>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/flowbite@4.0.1/dist/flowbite.min.js"></script>
+</head>
+<body class="bg-gray-50">
+<div th:replace="~{/product/components/navbar/navigation-bar :: navigation(${user.getSimpleRole()})}"></div>
+<div class="mx-auto max-w-6xl px-4 py-10 2xl:px-0">
+    <a th:href="@{/events}" class="text-blue-700 hover:underline font-medium">&larr; Torna agli eventi</a>
+
+    <section class="mt-6 bg-white shadow rounded-lg p-8" th:object="${event}">
+        <div class="flex flex-col md:flex-row md:items-start md:justify-between gap-4">
+            <div>
+                <p class="text-sm text-gray-500 font-semibold" th:text="*{type}">Tipo</p>
+                <h1 class="text-4xl font-bold text-gray-900" th:text="*{title}">Titolo evento</h1>
+                <p class="mt-2 text-gray-600" th:text="*{description}">Descrizione evento.</p>
+            </div>
+            <span class="self-start px-3 py-1 rounded-full text-sm font-semibold"
+                  th:classappend="*{state.name() == 'PUBLISHED'} ? ' bg-green-100 text-green-700' :
+                                   (*{state.name() == 'CANCELLED'} ? ' bg-red-100 text-red-700' :
+                                   (*{state.name() == 'ARCHIVED'} ? ' bg-gray-200 text-gray-700' : ' bg-amber-100 text-amber-800'))"
+                  th:text="*{state}">
+                Stato
+            </span>
+        </div>
+
+        <div class="grid md:grid-cols-2 gap-6 mt-6">
+            <div class="space-y-3">
+                <div>
+                    <p class="text-sm text-gray-500">Località</p>
+                    <p class="text-lg font-semibold text-gray-900"
+                       th:text="${event.location != null && event.location.address != null ? event.location.address : 'Non specificata'}">Indirizzo</p>
+                </div>
+                <div>
+                    <p class="text-sm text-gray-500">Inizio</p>
+                    <p class="text-lg font-semibold text-gray-900"
+                       th:text="${event.startDateTime != null ? #temporals.format(event.startDateTime, 'dd/MM/yyyy HH:mm') : 'N/D'}">Data inizio</p>
+                </div>
+                <div>
+                    <p class="text-sm text-gray-500">Fine</p>
+                    <p class="text-lg font-semibold text-gray-900"
+                       th:text="${event.endDateTime != null ? #temporals.format(event.endDateTime, 'dd/MM/yyyy HH:mm') : 'N/D'}">Data fine</p>
+                </div>
+            </div>
+            <div class="space-y-3">
+                <div>
+                    <p class="text-sm text-gray-500">Prezzo</p>
+                    <p class="text-lg font-semibold text-gray-900"
+                       th:text="${event.price != null ? event.price + ' ' + (event.currencyCode != null ? event.currencyCode : 'EUR') : 'Gratis'}">Prezzo evento</p>
+                </div>
+                <div>
+                    <p class="text-sm text-gray-500">Organizzatore</p>
+                    <p class="text-lg font-semibold text-gray-900"
+                       th:text="${event.entertainerEmail != null ? event.entertainerEmail : 'Non specificato'}">Email organizzatore</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="mt-10 border-t border-gray-200 pt-6">
+            <h2 class="text-2xl font-bold text-gray-900 mb-3">Condividi questo evento:</h2>
+            <p class="text-gray-600 mb-4">Invita altri a partecipare condividendo il link diretto all'evento.</p>
+            <div class="flex space-x-3 items-center">
+                <a th:href="@{'https://www.facebook.com/sharer/sharer.php?u=' + ${pageUrl}}"
+                   target="_blank" rel="noopener"
+                   aria-label="Condividi su Facebook"
+                   class="p-3 rounded-full bg-blue-600 hover:bg-blue-700 transition transform hover:scale-110">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0,0,256,256">
+                        <g fill="#ffffff" fill-rule="nonzero" stroke="none" stroke-width="1" stroke-linecap="butt" stroke-linejoin="miter" stroke-miterlimit="10" stroke-dasharray="" stroke-dashoffset="0" font-family="none" font-weight="none" font-size="none" text-anchor="none" style="mix-blend-mode: normal"><g transform="scale(5.12,5.12)"><path d="M25,3c-12.15,0 -22,9.85 -22,22c0,11.03 8.125,20.137 18.712,21.728v-15.897h-5.443v-5.783h5.443v-3.848c0,-6.371 3.104,-9.168 8.399,-9.168c2.536,0 3.877,0.188 4.512,0.274v5.048h-3.612c-2.248,0 -3.033,2.131 -3.033,4.533v3.161h6.588l-0.894,5.783h-5.694v15.944c10.738,-1.457 19.022,-10.638 19.022,-21.775c0,-12.15 -9.85,-22 -22,-22z"></path></g></g>
+                    </svg>
+                </a>
+
+                <a th:href="@{'https://twitter.com/intent/tweet?url=' + ${pageUrl}}"
+                   target="_blank" rel="noopener"
+                   aria-label="Condividi su X (Twitter)"
+                   class="p-3 rounded-full bg-black hover:bg-gray-900 transition transform hover:scale-110">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0,0,256,256">
+                        <g fill="#ffffff" fill-rule="nonzero" stroke="none" stroke-width="1" stroke-linecap="butt" stroke-linejoin="miter" stroke-miterlimit="10" stroke-dasharray="" stroke-dashoffset="0" font-family="none" font-weight="none" font-size="none" text-anchor="none" style="mix-blend-mode: normal"><g transform="scale(5.12,5.12)"><path d="M11,4c-3.866,0 -7,3.134 -7,7v28c0,3.866 3.134,7 7,7h28c3.866,0 7,-3.134 7,-7v-28c0,-3.866 -3.134,-7 -7,-7zM13.08594,13h7.9375l5.63672,8.00977l6.83984,-8.00977h2.5l-8.21094,9.61328l10.125,14.38672h-7.93555l-6.54102,-9.29297l-7.9375,9.29297h-2.5l9.30859,-10.89648zM16.91406,15l14.10742,20h3.06445l-14.10742,-20z"></path></g></g>
+                    </svg>
+                </a>
+
+                <button type="button"
+                        onclick="copyPageUrl()"
+                        aria-label="Copia link evento"
+                        class="p-3 rounded-full bg-gray-200 hover:bg-gray-300 transition transform hover:scale-110">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" role="img" aria-hidden="true">
+                        <path fill="#111827" d="M16 1H4a2 2 0 00-2 2v12h2V3h12V1z"/>
+                        <path fill="#111827" d="M20 5H8a2 2 0 00-2 2v14a2 2 0 002 2h12a2 2 0 002-2V7a2 2 0 00-2-2zm0 16H8V7h12v14z"/>
+                    </svg>
+                </button>
+            </div>
+        </div>
+    </section>
+</div>
+
+<script th:inline="javascript">
+    function copyPageUrl() {
+        const url = /*[[${pageUrl}]]*/ '';
+        const toCopy = url && url !== '' ? url : window.location.href;
+        navigator.clipboard?.writeText(toCopy)
+            .then(() => { alert('Link copiato negli appunti'); })
+            .catch(() => { prompt('Copia il link:', toCopy); });
+    }
+</script>
+</body>
+</html>
