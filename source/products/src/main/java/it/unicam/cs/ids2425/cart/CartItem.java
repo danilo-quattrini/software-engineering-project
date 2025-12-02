@@ -16,7 +16,15 @@ import java.text.DecimalFormat;
 @Table(name = "cart_item")
 public class CartItem {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @SequenceGenerator(
+            name = "cartItem_sequence",
+            sequenceName = "cartItem_sequence",
+            allocationSize = 1
+    )
+    @GeneratedValue(
+            strategy = GenerationType.SEQUENCE,
+            generator = "cartItem_sequence"
+    )
     private Long id;
 
     @Column(name = "item_quantity")

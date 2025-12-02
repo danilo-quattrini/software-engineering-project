@@ -10,6 +10,7 @@ import it.unicam.cs.ids2425.users.User;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -96,8 +97,11 @@ public class CartService implements CartOperation {
 
     @Override
     public Cart getOrCreateUserCart(User user) {
-        return cartRepository.findByOwner(user)
-                .orElseGet(() -> createCartForUser(user));
+        List<Cart> cartList = cartRepository.findByOwner(user);
+        if (cartList.isEmpty()){
+            return createCartForUser(user);
+        }
+        return cartList.getLast();
     }
 
     @Override

@@ -2,6 +2,8 @@ package it.unicam.cs.ids2425.cart.controller;
 
 import it.unicam.cs.ids2425.cart.Cart;
 import it.unicam.cs.ids2425.cart.service.CartOperation;
+import it.unicam.cs.ids2425.payment.service.PaymentService;
+import it.unicam.cs.ids2425.payment.service.PaymentServiceInterface;
 import it.unicam.cs.ids2425.product.bundle.Bundle;
 import it.unicam.cs.ids2425.product.bundle.service.BundleOperation;
 import it.unicam.cs.ids2425.users.User;
@@ -14,7 +16,6 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
-import java.text.DecimalFormat;
 import java.util.UUID;
 
 @Controller
@@ -27,7 +28,7 @@ public class CartController {
     private static final String SESSION_CART_ID = "cartId";
     private final BundleOperation bundleService;
     private final UserRepository userRepository;
-
+    private final PaymentServiceInterface paymentServiceInterface;
     // Method to fetch the authenticated user
     private User getUserAuthenticated() {
         // 1. Take logged-in user info
@@ -42,33 +43,25 @@ public class CartController {
     @ModelAttribute("cart")
     public Cart currentCart() {
         User user = getUserAuthenticated();
-
+        Long cartId = null;
         if (user != null) {
             Cart userCart = cartOperation.getOrCreateUserCart(user);
-            session.setAttribute(SESSION_CART_ID, userCart.getId());
-            return userCart;
+            cartId = userCart.getId();
+
+            if (paymentServiceInterface.getByReferenceId(cartId).isEmpty()) {
+                session.setAttribute(SESSION_CART_ID, cartId);
+            } else {
+                Cart cart = cartOperation.createCartForUser(user);
+                session.setAttribute(SESSION_CART_ID, cart.getId());
+            }
         }
 
-
-        Long cartId = getSessionCartId();
-        Cart cart = null;
-
-        if (cartId != null) {
-            cart = cartOperation.getCart(cartId);
-        } else {
-            cart = cartOperation.createCart();
-        }
-
-        session.setAttribute(SESSION_CART_ID, cart.getId());
-        return cart;
+        return cartOperation.getCart(getSessionCartId());
     }
 
     @GetMapping("/items")
     @PreAuthorize("hasAnyRole('BUYER')")
     public String index(Model model, @ModelAttribute("cart") Cart cart) {
-        DecimalFormat format = new DecimalFormat("#0.00");
-        String price = format.format(cart.getAmount());
-        model.addAttribute("cartPrice", price);
         model.addAttribute("cart", cart);
         return "cart/index";
     }
