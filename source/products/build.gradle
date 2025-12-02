@@ -8,6 +8,7 @@ dependencies {
     implementation project(':location')
     implementation project(':paymentsystem')
     implementation project(':users')
+    implementation project(':events')
     implementation project(':rest')
     // Lombok dependencies
     // Implementation dependencies
