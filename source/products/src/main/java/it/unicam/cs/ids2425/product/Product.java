@@ -11,6 +11,7 @@ import lombok.Setter;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
+import java.text.DecimalFormat;
 import java.time.LocalDate;
 import java.util.UUID;
 
@@ -74,6 +75,8 @@ public class Product {
     @JoinColumn(name = "seller_id")
     private User user;
 
+    private static final DecimalFormat PRICE_FORMAT = new DecimalFormat("#0.00");
+
     public Product(String name, double price, Integer quantity, String description, LocalDate expireDate, Category category) {
         this.name = name;
         this.price = price;
@@ -81,5 +84,8 @@ public class Product {
         this.description = description;
         this.category = category;
         this.expireDate = expireDate;
+    }
+    public String getFormattedPrice() {
+        return PRICE_FORMAT.format(this.price);
     }
 }
