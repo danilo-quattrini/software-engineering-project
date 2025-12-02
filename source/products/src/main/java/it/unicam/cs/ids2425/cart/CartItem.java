@@ -6,6 +6,7 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import java.text.DecimalFormat;
 
 @Entity
 @Getter
@@ -24,6 +25,7 @@ public class CartItem {
     @Column(name = "item_price")
     private double productPrice;
 
+    private static final DecimalFormat PRICE_FORMAT = new DecimalFormat("#0.00");
     /**
      * This means many cart items belong to one cart.
      *
@@ -45,5 +47,8 @@ public class CartItem {
         this.cartItemProduct = cartItemProduct;
         this.productQuantity = productQuantity;
         this.productPrice = productPrice;
+    }
+    public String getFormattedPrice() {
+        return PRICE_FORMAT.format(this.productPrice);
     }
 }

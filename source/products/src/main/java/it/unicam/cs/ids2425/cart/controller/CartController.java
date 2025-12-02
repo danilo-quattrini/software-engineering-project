@@ -10,7 +10,7 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
-
+import java.text.DecimalFormat;
 import java.util.UUID;
 
 @Controller
@@ -53,6 +53,9 @@ public class CartController {
     @GetMapping("/items")
     @PreAuthorize("hasAnyRole('BUYER')")
     public String index(Model model, @ModelAttribute("cart") Cart cart) {
+        DecimalFormat format = new DecimalFormat("#0.00");
+        String price = format.format(cart.getAmount());
+        model.addAttribute("cartPrice", price);
         model.addAttribute("cart", cart);
         return "cart/index";
     }
