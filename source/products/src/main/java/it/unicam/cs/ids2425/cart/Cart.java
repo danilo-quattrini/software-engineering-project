@@ -1,6 +1,7 @@
 package it.unicam.cs.ids2425.cart;
 
 import it.unicam.cs.ids2425.payment.referable.Referable;
+import it.unicam.cs.ids2425.users.User;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -20,6 +21,9 @@ public class Cart extends Referable {
 
     @OneToMany(mappedBy = "parentCart", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private List<CartItem> cartItems = new ArrayList<>();
+
+    @ManyToOne
+    private User owner;
 
     public void addItem(CartItem item) {
         cartItems.add(item);

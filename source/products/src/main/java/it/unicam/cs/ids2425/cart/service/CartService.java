@@ -6,6 +6,7 @@ import it.unicam.cs.ids2425.cart.repository.CartItemRepository;
 import it.unicam.cs.ids2425.cart.repository.CartRepository;
 import it.unicam.cs.ids2425.product.Product;
 import it.unicam.cs.ids2425.product.repository.ProductRepository;
+import it.unicam.cs.ids2425.users.User;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -28,8 +29,15 @@ public class CartService implements CartOperation {
 
     @Override
     public Cart createCart() {
-        Cart c = new Cart();
-        return cartRepository.save(c);
+        Cart cart = new Cart();
+        return cartRepository.save(cart);
+    }
+
+    @Override
+    public Cart createCartForUser(User user) {
+        Cart cart = new Cart();
+        cart.setOwner(user);
+        return cartRepository.save(cart);
     }
 
     @Override
@@ -84,6 +92,12 @@ public class CartService implements CartOperation {
         cart.updateTotal();
 
         cartRepository.save(cart);
+    }
+
+    @Override
+    public Cart getOrCreateUserCart(User user) {
+        return cartRepository.findByOwner(user)
+                .orElseGet(() -> createCartForUser(user));
     }
 
     @Override

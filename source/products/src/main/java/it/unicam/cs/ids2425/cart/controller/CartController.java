@@ -1,12 +1,16 @@
 package it.unicam.cs.ids2425.cart.controller;
 
-import it.unicam.cs.ids2425.payment.service.PaymentService;
 import it.unicam.cs.ids2425.cart.Cart;
 import it.unicam.cs.ids2425.cart.service.CartOperation;
 import it.unicam.cs.ids2425.product.bundle.Bundle;
 import it.unicam.cs.ids2425.product.bundle.service.BundleOperation;
+import it.unicam.cs.ids2425.users.User;
+import it.unicam.cs.ids2425.users.repository.UserRepository;
 import jakarta.servlet.http.HttpSession;
+import lombok.RequiredArgsConstructor;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -15,37 +19,46 @@ import java.util.UUID;
 
 @Controller
 @RequestMapping("/cart")
+@RequiredArgsConstructor
 public class CartController {
 
     private final CartOperation cartOperation;
     private final HttpSession session;
-
     private static final String SESSION_CART_ID = "cartId";
-    private final PaymentService paymentService;
     private final BundleOperation bundleService;
+    private final UserRepository userRepository;
 
-    public CartController(CartOperation cartOperation, HttpSession session, PaymentService paymentService, BundleOperation bundleService) {
-        this.cartOperation = cartOperation;
-        this.session = session;
-        this.paymentService = paymentService;
-        this.bundleService = bundleService;
+    // Method to fetch the authenticated user
+    private User getUserAuthenticated() {
+        // 1. Take logged-in user info
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        String username = auth.getName(); // this is the email
+
+        // 2. Load full User entity from DB
+        return userRepository.findByEmail(username)
+                .orElseThrow(() -> new RuntimeException("Logged user not found"));
     }
-
+    
     @ModelAttribute("cart")
     public Cart currentCart() {
-        Long cartId = getSessionCartId();
+        User user = getUserAuthenticated();
 
-        Cart cart = null;
-        if (cartId != null) {
-            if (paymentService.getByReferenceId(cartId).isPresent()){
-                cart = cartOperation.createCart();
-            }else{
-               cart =  cartOperation.getCart(cartId);
-            }
+        if (user != null) {
+            Cart userCart = cartOperation.getOrCreateUserCart(user);
+            session.setAttribute(SESSION_CART_ID, userCart.getId());
+            return userCart;
         }
-        if(cart == null){
+
+
+        Long cartId = getSessionCartId();
+        Cart cart = null;
+
+        if (cartId != null) {
+            cart = cartOperation.getCart(cartId);
+        } else {
             cart = cartOperation.createCart();
         }
+
         session.setAttribute(SESSION_CART_ID, cart.getId());
         return cart;
     }

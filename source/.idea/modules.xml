@@ -5,6 +5,7 @@
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/osm/software-engineering-project.source.osm.main.iml" filepath="$PROJECT_DIR$/.idea/modules/osm/software-engineering-project.source.osm.main.iml" />
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/products/software-engineering-project.source.products.main.iml" filepath="$PROJECT_DIR$/.idea/modules/products/software-engineering-project.source.products.main.iml" />
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/app/source.app.main.iml" filepath="$PROJECT_DIR$/.idea/modules/app/source.app.main.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/events/source.events.main.iml" filepath="$PROJECT_DIR$/.idea/modules/events/source.events.main.iml" />
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/location/source.location.main.iml" filepath="$PROJECT_DIR$/.idea/modules/location/source.location.main.iml" />
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/osm/source.osm.main.iml" filepath="$PROJECT_DIR$/.idea/modules/osm/source.osm.main.iml" />
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/paymentsystem/source.paymentsystem.main.iml" filepath="$PROJECT_DIR$/.idea/modules/paymentsystem/source.paymentsystem.main.iml" />

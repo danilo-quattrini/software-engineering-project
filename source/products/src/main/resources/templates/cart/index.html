@@ -101,7 +101,7 @@
                                     class="text-base font-normal text-gray-500 ">
                                     Original price
                                 </dt>
-                                <dd th:text="${item.cartItemProduct.price * item.productQuantity} + '€'"
+                                <dd th:text="${#numbers.formatDecimal(item.cartItemProduct.price * item.productQuantity, 2, 2)} + '€'"
                                     class="text-base font-medium text-gray-900">$7,592.00
                                 </dd>
                             </dl>
