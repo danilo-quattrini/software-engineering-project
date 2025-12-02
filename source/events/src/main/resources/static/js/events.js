@@ -609,6 +609,16 @@
                 card.appendChild(actions);
             }
 
+            const footer = document.createElement('div');
+            footer.className = 'event-card__footer';
+            const shareLink = document.createElement('a');
+            shareLink.className = 'button button--ghost';
+            shareLink.href = `/events/${event.id}`;
+            shareLink.textContent = 'Vedi dettagli e condividi';
+            shareLink.setAttribute('rel', 'noopener noreferrer');
+            footer.appendChild(shareLink);
+            card.appendChild(footer);
+
             eventsContainer.appendChild(card);
         });
     }
