@@ -6,6 +6,9 @@ import it.unicam.cs.ids2425.events.dto.EventResponse;
 import it.unicam.cs.ids2425.events.dto.EventStateUpdateRequest;
 import it.unicam.cs.ids2425.events.dto.EventUpdateRequest;
 import it.unicam.cs.ids2425.events.dto.InviteByEmail;
+import it.unicam.cs.ids2425.payment.Payment;
+import it.unicam.cs.ids2425.payment.referable.ReferableRepository;
+import it.unicam.cs.ids2425.payment.service.PaymentServiceInterface;
 import it.unicam.cs.ids2425.users.roles.Buyer;
 import it.unicam.cs.ids2425.users.roles.seller.Seller;
 import it.unicam.cs.ids2425.users.User;
@@ -30,10 +33,17 @@ public class EventService {
 
     private final EventRepository eventRepository;
     private final UserRepository userRepository;
+    private final PaymentServiceInterface paymentService;
+    private final ReferableRepository referableRepository;
 
-    public EventService(EventRepository eventRepository, UserRepository userRepository) {
+    public EventService(EventRepository eventRepository,
+                        UserRepository userRepository,
+                        PaymentServiceInterface paymentService,
+                        ReferableRepository referableRepository) {
         this.eventRepository = eventRepository;
         this.userRepository = userRepository;
+        this.paymentService = paymentService;
+        this.referableRepository = referableRepository;
     }
 
     public EventResponse createEvent(String email, EventRequest request) {
@@ -100,8 +110,11 @@ public class EventService {
 
     public void deleteEvent(Long entertainerId, Long eventId) {
         Event event = getEventForManagement(entertainerId, eventId);
+        List<Payment> payments = paymentService.getByReferenceId(eventId);
+        payments.forEach(payment -> paymentService.delete(payment.getId()));
         event.setEntertainer(null);
         eventRepository.delete(event);
+        referableRepository.delete(event);
     }
 
     @Transactional(Transactional.TxType.SUPPORTS)
