@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{product/components/head :: head('Edit Product')}"></head>
+<body class="bg-gray-50">
+<section class=" py-8 antialiased md:py-12 h-full">
+    <div class="mx-auto max-w-screen-xl px-4 2xl:px-0">
+        <div th:replace="~{product/components/navbar/marketplace-links :: nav}"></div>
+        <!-- Product Section -->
+        <h1 class="text-5xl text-black mb-5 font-bold"> Edit Product</h1>
+        <hr class="my-5 w-[500px] bg-black"/>
+
+        <form class="max-w-screen-xl mx-auto" th:action="@{/products/edit/{uuid}(uuid=*{id})}" th:object="${product}"
+              th:method="patch" enctype="multipart/form-data">
+            <div th:replace="~{product/components/form/input :: input('', 'hidden', 'id', 'id', 'id', *{id})}"
+                 th:field="*{id}"></div>
+            <div th:replace="~{product/components/form/input :: input('Name', 'text', 'name', 'name', 'Lonza Suino', *{name})}"
+                 th:field="*{name}"></div>
+            <div th:replace="~{product/components/form/input :: input('Price', 'number', 'price', 'price', '10.00$', *{price})}"
+                 th:field="*{price}"></div>
+            <div th:replace="~{product/components/form/input :: input('Quantity', 'number', 'quantity', 'quantity', '5', *{quantity})}"
+                 th:field="*{quantity}"></div>
+            <div th:replace="~{product/components/form/input :: input('Date', 'date', 'expireDate', 'expireDate','', *{expireDate})}"
+                 th:field="*{expireDate}"></div>
+            <!-- Select Category -->
+            <div class="mb-5">
+                <label for="categories" class="block mb-2 text-sm font-medium text-gray-900 ">Select The
+                    Category</label>
+                <select id="categories" th:field="*{category}"
+                        class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5">
+                    <option th:each="category : ${categories}"
+                            th:value="${category}"
+                            th:text="${category}">
+                    </option>
+                </select>
+            </div>
+            <!--Phases TextArea -->
+            <div th:if="${user.getSimpleRole() == 'TRANSFORMER'}">
+                <div th:replace="~{product/components/form/text-area :: textarea('Production Phases', 'productionPhases', 'productionPhases', 'This products has some phases....', null)}"
+                     th:field="*{productionPhases}">
+                </div>
+            </div>
+            <!--Description TextArea -->
+            <div th:replace="~{product/components/form/text-area :: textarea('Description', 'description', 'description', 'This products has some property....', *{description})}"
+                 th:field="*{description}"></div>
+
+            <!-- Certificate Upload -->
+            <div class="mb-5">
+                <label class="block mb-2 text-sm font-medium text-heading" for="file_input">Upload file</label>
+                <div th:if="${product.certificate != null}" class="flex items-center justify-between mb-2">
+                    <div class="text-sm text-gray-700">
+                        <p class="font-medium">Current certificate</p>
+                        <p th:text="${product.certificate.name}" class="text-gray-600">certificate.pdf</p>
+                    </div>
+                    <a th:href="@{/certificate/download/{id}(id=${product.certificate.id})}"
+                       class="inline-flex items-center rounded-lg bg-blue-700 text-white hover:bg-blue-800 focus:ring-blue-300 px-3 py-2 text-sm font-medium transition-colors duration-300">
+                        Download
+                    </a>
+                </div>
+                <p th:if="${product.certificate != null}" class="mb-2 text-sm text-gray-500">Leave empty to keep the current certificate.</p>
+                <input class="cursor-pointer p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500 focus:ring-brand focus:border-brand block shadow-xs placeholder:text-body"
+                       aria-describedby="file_input_help" id="file_input" type="file" name="file">
+                <p class="mt-1 text-sm text-gray-500" id="file_input_help">SVG, PNG, JPG or GIF (MAX. 800x400px).</p>
+            </div>
+
+            <button type="submit"
+                    class="inline-flex items-center rounded-lg bg-blue-700 px-5 py-2.5 text-sm font-medium text-white hover:bg-blue-800 focus:outline-none focus:ring-4  focus:ring-primary-300 cursor-pointer transition-colors duration-300"
+            >Edit
+            </button>
+
+        </form>
+    </div>
+</section>
+</body>
+</html>

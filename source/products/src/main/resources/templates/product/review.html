@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{product/components/head :: head('Curation queue')}"></head>
+<body class="bg-gray-50">
+<div th:replace="~{product/components/navbar/navigation-bar :: navigation(${user.getSimpleRole()})}"></div>
+<section class="py-10">
+    <div class="mx-auto max-w-screen-xl px-4 2xl:px-0">
+        <div class="flex flex-col md:flex-row md:items-center md:justify-between gap-4 mb-6">
+            <div>
+                <p class="text-sm text-gray-500 uppercase tracking-wide">Curatore</p>
+                <h1 class="text-4xl font-bold text-gray-900">Coda di approvazione</h1>
+                <p class="text-gray-600 mt-2 max-w-2xl">Revisiona i nuovi prodotti inviati dai venditori e decidi se
+                    renderli visibili nel marketplace. I prodotti rifiutati restano nascosti agli acquirenti ma sono
+                    visibili al venditore come "Rifiutato" così da poterli correggere e ripresentare.</p>
+            </div>
+            <div class="inline-flex items-center gap-2 rounded-lg bg-blue-100 px-4 py-2 text-blue-800">
+                <span class="text-sm font-semibold">Stato</span>
+                <span class="rounded-md bg-blue-600 px-2 py-1 text-white text-xs" th:text="${pendingProducts.size()} + ' in attesa'"></span>
+            </div>
+        </div>
+
+        <div class="bg-white border border-gray-200 shadow-sm rounded-2xl p-6">
+            <div class="flex items-center justify-between mb-4">
+                <h2 class="text-xl font-semibold text-gray-900">Prodotti in revisione</h2>
+                <p class="text-sm text-gray-500" th:if="${#lists.isEmpty(pendingProducts)}">Nessun prodotto in attesa</p>
+            </div>
+
+            <div class="grid gap-4 md:grid-cols-2 xl:grid-cols-3" th:if="${!#lists.isEmpty(pendingProducts)}">
+                <div th:each="product : ${pendingProducts}" th:object="${product}" class="border border-gray-200 rounded-xl p-5 bg-gray-50 shadow-sm flex flex-col">
+                    <div class="flex items-start justify-between gap-3 mb-3">
+                        <div>
+                            <p class="text-xs uppercase text-gray-500">Richiesta venditore</p>
+                            <h3 class="text-lg font-semibold text-gray-900" th:text="*{name}"></h3>
+                        </div>
+                        <span class="px-3 py-1 rounded-full text-xs font-semibold bg-amber-100 text-amber-800">In attesa</span>
+                    </div>
+                    <p class="text-gray-600 text-sm mb-3" th:text="*{description}"></p>
+                    <div class="text-sm text-gray-700 mb-4 flex flex-wrap gap-2">
+                        <span class="inline-flex items-center gap-1 rounded-full bg-gray-200 px-3 py-1 text-xs font-medium" th:text="'Categoria: ' + *{category}"></span>
+                        <span class="inline-flex items-center gap-1 rounded-full bg-gray-200 px-3 py-1 text-xs font-medium" th:text="'Prezzo: ' + *{price} + ' €'"></span>
+                        <span class="inline-flex items-center gap-1 rounded-full bg-gray-200 px-3 py-1 text-xs font-medium" th:text="'Quantità: ' + *{quantity}"></span>
+                        <span class="inline-flex items-center gap-1 rounded-full bg-gray-200 px-3 py-1 text-xs font-medium" th:text="'Scadenza: ' + *{expireDate}"></span>
+                    </div>
+                    <div class="mt-auto flex items-center justify-between gap-2">
+                        <form th:action="@{/products/{uuid}/reject(uuid=*{id})}" method="post" class="w-full">
+                            <button type="submit" class="w-full inline-flex items-center justify-center rounded-lg bg-red-600 text-white font-semibold px-4 py-2.5 hover:bg-red-700 transition-colors">Rifiuta</button>
+                        </form>
+                        <form th:action="@{/products/{uuid}/approve(uuid=*{id})}" method="post" class="w-full">
+                            <button type="submit" class="w-full inline-flex items-center justify-center rounded-lg bg-green-600 text-white font-semibold px-4 py-2.5 hover:bg-green-700 transition-colors">Approva</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="mt-8 bg-white border border-gray-200 shadow-sm rounded-2xl p-6">
+            <div class="flex items-center justify-between mb-4">
+                <div>
+                    <h2 class="text-xl font-semibold text-gray-900">Ultimi prodotti approvati</h2>
+                    <p class="text-sm text-gray-500">Questa lista è visibile agli acquirenti sul marketplace.</p>
+                </div>
+            </div>
+            <div class="grid gap-4 md:grid-cols-2 xl:grid-cols-3" th:if="${!#lists.isEmpty(approvedProducts)}">
+                <article th:each="product : ${approvedProducts}" th:object="${product}" class="border rounded-xl p-5 bg-gray-50 shadow-sm">
+                    <div class="flex items-start justify-between mb-2">
+                        <h3 class="text-lg font-semibold text-gray-900" th:text="*{name}"></h3>
+                        <span class="px-2 py-1 rounded-full text-xs font-semibold bg-green-100 text-green-700">Approvato</span>
+                    </div>
+                    <p class="text-gray-600 text-sm mb-3" th:text="*{description}"></p>
+                    <div class="flex items-center justify-between text-sm text-gray-700">
+                        <span th:text="*{category}"></span>
+                        <span class="font-semibold" th:text="*{price} + ' €'"></span>
+                    </div>
+                </article>
+            </div>
+            <p class="text-sm text-gray-500" th:if="${#lists.isEmpty(approvedProducts)}">Non ci sono prodotti approvati da mostrare.</p>
+        </div>
+    </div>
+</section>
+</body>
+</html>

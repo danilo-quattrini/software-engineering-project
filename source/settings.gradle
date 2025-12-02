@@ -11,4 +11,6 @@ plugins {
 }
 
 rootProject.name = 'source'
-include('app', 'osm', 'paymentsystem', 'socialsystem')
+include('app', 'osm', 'rest', 'users', 'paymentsystem', 'location', 'products')
+
+include 'events'

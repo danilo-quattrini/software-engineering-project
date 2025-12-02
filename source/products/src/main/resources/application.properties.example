@@ -1,0 +1,16 @@
+# Application Configuration
+spring.application.name=CarloApp
+spring.profiles.active=carlo-secure
+
+# Database Configuration
+spring.datasource.url=jdbc:postgresql://localhost:5432/{your_database}
+spring.datasource.username={your_username}
+spring.datasource.password={your_password}
+spring.jpa.hibernate.ddl-auto=create-drop
+spring.jpa.show-sql=true
+spring.jpa.properties.hibernate.format-sql=true
+server.error.include-message=always
+
+# Language Configuration
+spring.messages.basename=messages
+spring.messages.encoding=UTF-8

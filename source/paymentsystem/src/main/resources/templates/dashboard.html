@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{product/components/head :: head('Marketplace')}"></head>
+
+<body class="bg-gray-50 min-h-screen">
+
+<div th:replace="~{product/components/navbar/navigation-bar :: navigation(${user.getSimpleRole()})}"></div>
+
+<!-- Contenuto centrato -->
+<section class="min-h-screen flex flex-col items-center justify-center py-8 md:py-12">
+
+    <div class="w-full max-w-4xl bg-white shadow-lg rounded-2xl p-8">
+
+        <h3 class="text-2xl font-semibold text-center mb-6 text-gray-800">
+            Gestione Pagamenti
+        </h3>
+
+        <table class="w-full table-auto border-collapse">
+            <thead>
+            <tr class="bg-gray-100 text-gray-700">
+                <th class="px-4 py-2 text-left">ID</th>
+                <th class="px-4 py-2 text-left">Utente</th>
+                <th class="px-4 py-2 text-left">Importo</th>
+                <th class="px-4 py-2 text-center">Azione</th>
+            </tr>
+            </thead>
+
+            <tbody>
+            <tr th:each="p : ${payments}" class="border-b hover:bg-gray-50">
+                <td class="px-4 py-2" th:text="${p.id}"></td>
+                <td class="px-4 py-2" th:text="${p.payer.email}"></td>
+                <td class="px-4 py-2" th:text="${#numbers.formatDecimal(p.reference.amount, 2, 2)}"></td>
+
+                <td class="px-4 py-2 text-center">
+                    <form th:action="@{/payments/admin/process/{id}(id=${p.id})}" method="post">
+                        <button type="submit"
+                                class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-1 rounded-md font-medium transition duration-200">
+                            Contabilizza
+                        </button>
+                    </form>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+
+    </div>
+
+</section>
+
+</body>
+</html>

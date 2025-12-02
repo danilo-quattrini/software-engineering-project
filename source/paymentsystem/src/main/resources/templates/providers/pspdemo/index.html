@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="it" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Demo PSP</title>
+    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+</head>
+<body class="min-h-screen flex items-center justify-center bg-gradient-to-br from-gray-100 to-gray-200">
+<div class="w-full max-w-md bg-white shadow-lg rounded-2xl p-8">
+    <h3 class="text-2xl font-semibold text-center mb-2 text-gray-800">Conferma Pagamento</h3>
+    <p class="text-sm text-gray-500 text-center mb-6">PSP Demo</p>
+
+    <div class="space-y-2">
+        <p><strong>Email:</strong> <span th:text="${paymentDto.payer.email}"></span></p>
+        <p><strong>Importo:</strong> <span th:text="${formattedAmount} + ' ' + ${paymentDto.reference.currencyCode}"></span></p>
+        <div th:if="${paymentDto.location != null}">
+            <p><strong>Indirizzo:</strong> <span th:text="${paymentDto.location.address}"></span></p>
+            <p><strong>Lat/Lng:</strong>
+                <span th:text="${paymentDto.location.lat}"></span>,
+                <span th:text="${paymentDto.location.lng}"></span>
+            </p>
+        </div>
+    </div>
+
+    <form th:action="@{/psp/pspdemo}" method="post" class="space-y-6">
+        <input type="hidden" name="dto" th:value="${dtoJson}"/>
+
+        <div>
+            <button type="submit"
+                    class="w-full bg-blue-600 hover:bg-blue-700 text-white font-semibold py-2 rounded-md transition duration-200">
+                Conferma pagamento
+            </button>
+        </div>
+    </form>
+</div>
+</body>
+</html>

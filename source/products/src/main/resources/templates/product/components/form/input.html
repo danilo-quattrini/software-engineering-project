@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{/product/components/head :: head('Input Component')}"></head>
+<body>
+<div class="mb-5" th:fragment="input(label, type, id, name, placeholder, value)">
+    <label th:for="${label}" th:text="${label}" class="block mb-2 text-sm font-medium text-gray-900">
+
+    </label>
+    <input th:type="${type}"
+           th:id="${id}"
+           th:name="${name}"
+           th:field="*{__${name}__}"
+           th:placeholder="${placeholder}"
+           th:value="${value != null} ? ${value} : ' '"
+           th:classappend="${#fields.hasErrors(name)} ? ' border-red-500 focus:border-red-500 focus:ring-red-500 ' : ' '"
+           class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
+           step="0.01"
+    />
+    <p class="text-red-500 font-bold text-sm bg-red-50 border-red-500 rounded-b-md px-4 py-2"
+       th:if="${#fields.hasErrors(name)}"
+       th:errors="*{__${name}__}"></p>
+</div>
+</body>
+</html>

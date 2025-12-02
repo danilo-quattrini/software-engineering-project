@@ -9,3 +9,24 @@ plugins {
     // Apply the java-library plugin for API and implementation separation.
     id 'java-library'
 }
+
+dependencies{
+    // Apply Spring Boot plugins and dependencies
+    api 'org.springframework.boot:spring-boot-gradle-plugin:3.5.6'
+    api 'io.spring.gradle:dependency-management-plugin:1.1.7'
+
+    // Spring Boot dependencies
+    api platform('org.springframework.boot:spring-boot-dependencies:3.5.6')
+    api 'org.springframework.boot:spring-boot-starter-web'
+    api 'org.springframework.boot:spring-boot-starter-data-jpa'
+    api 'org.springframework.boot:spring-boot-starter-thymeleaf'
+    api 'org.springframework.boot:spring-boot-starter-validation'
+    api 'org.springframework.boot:spring-boot-starter-data-jdbc'
+    api 'org.springframework.boot:spring-boot-starter-jdbc'
+    api 'org.springframework.boot:spring-boot-starter-security'
+    api 'org.springframework.boot:spring-boot-starter-actuator'
+
+    // Database driver
+    runtimeOnly 'org.postgresql:postgresql'
+    runtimeOnly 'com.h2database:h2'
+}

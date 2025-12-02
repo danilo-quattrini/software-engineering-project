@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{product/components/head :: head('Marketplace')}"></head>
+
+<body class="bg-gray-50 min-h-screen">
+
+<div th:replace="~{product/components/navbar/navigation-bar :: navigation(${user.getSimpleRole()})}"></div>
+
+<div class="flex justify-center py-12">
+    <div class="w-full max-w-md bg-white shadow-lg rounded-2xl p-8">
+
+        <h3 class="text-2xl font-semibold text-center mb-6 text-gray-800">
+            Il tuo saldo
+        </h3>
+
+        <div class="text-center">
+            <p class="text-xl font-medium text-gray-700">
+                <span th:text="${balance}"></span>
+            </p>
+        </div>
+
+    </div>
+</div>
+
+</body>
+</html>

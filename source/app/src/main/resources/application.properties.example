@@ -1,0 +1,25 @@
+# Application Configuration
+spring.application.name=App
+spring.profiles.active={security-profile}
+
+# Database Configuration
+spring.main.allow-bean-definition-overriding=true
+spring.datasource.url={database-connection-url}
+spring.datasource.username={your-username}
+spring.datasource.password={your-password}
+spring.jpa.database-platform={dialect}
+spring.jpa.hibernate.ddl-auto=create-drop
+spring.jpa.show-sql=true
+spring.jpa.properties.hibernate.format-sql=true
+server.error.include-message=always
+
+# Language Configuration
+spring.messages.basename=messages
+spring.messages.encoding=UTF-8
+
+# File configuration
+spring.servlet.multipart.enabled=true
+spring.servlet.multipart.max-file-size=10MB
+spring.servlet.multipart.max-request-size=10MB
+# Enable hidden method (for delete and put requests inside the controller)
+spring.mvc.hiddenmethod.filter.enabled=true
