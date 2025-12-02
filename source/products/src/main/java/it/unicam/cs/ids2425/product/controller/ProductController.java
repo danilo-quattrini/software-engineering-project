@@ -6,6 +6,7 @@ import it.unicam.cs.ids2425.product.Product;
 import it.unicam.cs.ids2425.product.ProductStatus;
 import it.unicam.cs.ids2425.product.favorite.service.FavoriteService;
 import it.unicam.cs.ids2425.product.service.ProductOperation;
+import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -56,9 +57,10 @@ public class ProductController {
     }
 
     @GetMapping("/{uuid}")
-    public String show(@PathVariable("uuid") UUID uuid, Model model) {
+    public String show(@PathVariable("uuid") UUID uuid, Model model, HttpServletRequest request) {
         Product product = productOperation.showProductInfo(uuid);
         User user = getUserAuthenticated();
+        String pageUrl = request.getRequestURL().toString();
 
         boolean isOwnerOrTrustee = user != null && ("TRUSTEE".equals(user.getSimpleRole())
                 || (product.getUser() != null && product.getUser().getId().equals(user.getId())));
@@ -67,6 +69,7 @@ public class ProductController {
             return "redirect:/products";
         }
 
+        model.addAttribute("pageUrl", pageUrl);
         model.addAttribute("product", product);
         return "product/show";
     }
