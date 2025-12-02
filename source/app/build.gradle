@@ -24,6 +24,7 @@ dependencies {
 
     // Database driver
     runtimeOnly 'org.postgresql:postgresql'
+    runtimeOnly 'com.h2database:h2'
 
     implementation project(":location")
     implementation project(":osm")

@@ -4,9 +4,10 @@ spring.profiles.active={security-profile}
 
 # Database Configuration
 spring.main.allow-bean-definition-overriding=true
-spring.datasource.url=jdbc:postgresql://localhost:5432/{your_database}
+spring.datasource.url={database-connection-url}
 spring.datasource.username={your-username}
 spring.datasource.password={your-password}
+spring.jpa.database-platform={dialect}
 spring.jpa.hibernate.ddl-auto=create-drop
 spring.jpa.show-sql=true
 spring.jpa.properties.hibernate.format-sql=true
