@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import java.text.DecimalFormat;
 import java.util.Map;
 
 @Controller
@@ -40,6 +41,8 @@ public class PaymentServiceProviderDemoController {
     @GetMapping
     public String showPaymentPage(@RequestParam("dto") String dtoJson, Model model) throws JsonProcessingException {
         PaymentDTO dto = buildPaymentDTO(dtoJson);
+        DecimalFormat priceFormat = new DecimalFormat("#0.00");
+        model.addAttribute("formattedAmount", priceFormat.format(dto.getReference().getAmount()));
         model.addAttribute("paymentDto", dto);
         model.addAttribute("dtoJson", dtoJson);
         return "providers/pspdemo/index";

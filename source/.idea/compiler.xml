@@ -15,7 +15,7 @@
         <module name="source.location.test" />
         <module name="source.events.main" />
         <module name="source.rest.main" />
-        <module name="software-engineering-project.source.osm.main" />
+        <module name="source.osm.main" />
         <module name="source.users.test" />
         <module name="source.location.main" />
         <module name="source.rest.test" />

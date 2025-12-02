@@ -29,7 +29,7 @@
             <tr th:each="p : ${payments}" class="border-b hover:bg-gray-50">
                 <td class="px-4 py-2" th:text="${p.id}"></td>
                 <td class="px-4 py-2" th:text="${p.payer.email}"></td>
-                <td class="px-4 py-2" th:text="${p.reference.amount}"></td>
+                <td class="px-4 py-2" th:text="${#numbers.formatDecimal(p.reference.amount, 2, 2)}"></td>
 
                 <td class="px-4 py-2 text-center">
                     <form th:action="@{/payments/admin/process/{id}(id=${p.id})}" method="post">

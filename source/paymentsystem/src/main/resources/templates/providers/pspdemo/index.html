@@ -12,7 +12,7 @@
 
     <div class="space-y-2">
         <p><strong>Email:</strong> <span th:text="${paymentDto.payer.email}"></span></p>
-        <p><strong>Importo:</strong> <span th:text="${paymentDto.reference.amount} + ' ' + ${paymentDto.reference.currencyCode}"></span></p>
+        <p><strong>Importo:</strong> <span th:text="${formattedAmount} + ' ' + ${paymentDto.reference.currencyCode}"></span></p>
         <div th:if="${paymentDto.location != null}">
             <p><strong>Indirizzo:</strong> <span th:text="${paymentDto.location.address}"></span></p>
             <p><strong>Lat/Lng:</strong>

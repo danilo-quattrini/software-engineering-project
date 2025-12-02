@@ -13,6 +13,8 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
+import java.text.DecimalFormat;
+
 @Controller
 @RequestMapping("/psp/paymentdemo")
 public class PaymentFormController {
@@ -43,6 +45,10 @@ public class PaymentFormController {
         dto.setPayer(payer);
 
         boolean isEvent = reference.getClass().getSimpleName().equals("Event");
+
+        DecimalFormat priceFormat = new DecimalFormat("#0.00");
+        model.addAttribute("formattedAmount", priceFormat.format(dto.getReference().getAmount()));
+
         model.addAttribute("isEvent", isEvent);
         model.addAttribute("paymentDto", dto);
         return "paymentform";

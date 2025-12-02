@@ -52,7 +52,7 @@
     <p class="text-lg text-gray-700 mb-4">
         Importo:
         <strong class="text-gray-900"
-                th:text="${paymentDto.reference.amount} + ' ' + ${paymentDto.reference.currencyCode}">
+                th:text="${formattedAmount} + ' ' + ${paymentDto.reference.currencyCode}">
         </strong>
     </p>
 
